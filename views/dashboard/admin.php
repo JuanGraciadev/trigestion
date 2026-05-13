@@ -15,7 +15,7 @@ if ($_SESSION['usuario']['id_rol'] != 1) {
     exit;
 }
 require_once __DIR__. '/../../config/database.php';
-require_once __DIR__ . '/../../models/Usuario.php';
+require_once __DIR__ . '/../../models/usuario.php';
 
 $database = new Database();
 $db = $database->conectar();

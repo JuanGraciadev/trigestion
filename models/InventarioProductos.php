@@ -100,7 +100,7 @@ class InventarioProductos {
                 LEFT JOIN producto prod ON dv.id_producto = prod.id_producto
                 LEFT JOIN categoria cat ON prod.id_categoria = cat.id_categoria
                 LEFT JOIN cliente c ON v.id_cliente = c.id_cliente
-                LEFT JOIN usuarios u ON c.id_usuarios = u.id_usuario
+                LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario
                 WHERE v.estado != 'Cancelado'
                 ORDER BY v.fecha DESC, v.id_venta DESC";
         $stmt = $this->conn->prepare($sql);

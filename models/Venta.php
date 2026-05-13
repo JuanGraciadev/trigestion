@@ -45,12 +45,12 @@ class Venta {
             }
 
             // Buscar id_cliente asociado al id_usuario
-            $stmtC = $this->conn->prepare("SELECT id_cliente FROM cliente WHERE id_usuarios = :id_usuario");
+            $stmtC = $this->conn->prepare("SELECT id_cliente FROM cliente WHERE id_usuario = :id_usuario");
             $stmtC->execute([':id_usuario' => $id_usuario]);
             $id_cliente = $stmtC->fetchColumn();
 
             if (!$id_cliente) {
-                $stmtInsert = $this->conn->prepare("INSERT INTO cliente (id_usuarios) VALUES (:id)");
+                $stmtInsert = $this->conn->prepare("INSERT INTO cliente (id_usuario) VALUES (:id)");
                 $stmtInsert->execute([':id' => $id_usuario]);
                 $id_cliente = $this->conn->lastInsertId();
             }
@@ -111,12 +111,12 @@ class Venta {
             }
 
             // Buscar id_cliente asociado al id_usuario del cliente
-            $stmtC = $this->conn->prepare("SELECT id_cliente FROM cliente WHERE id_usuarios = :id_usuario");
+            $stmtC = $this->conn->prepare("SELECT id_cliente FROM cliente WHERE id_usuario = :id_usuario");
             $stmtC->execute([':id_usuario' => $id_usuario_cliente]);
             $id_cliente = $stmtC->fetchColumn();
 
             if (!$id_cliente) {
-                $stmtInsert = $this->conn->prepare("INSERT INTO cliente (id_usuarios) VALUES (:id)");
+                $stmtInsert = $this->conn->prepare("INSERT INTO cliente (id_usuario) VALUES (:id)");
                 $stmtInsert->execute([':id' => $id_usuario_cliente]);
                 $id_cliente = $this->conn->lastInsertId();
             }
@@ -188,7 +188,7 @@ class Venta {
                        u.direccion AS cliente_direccion
                 FROM venta v
                 LEFT JOIN cliente c ON v.id_cliente = c.id_cliente
-                LEFT JOIN usuarios u ON c.id_usuarios = u.id_usuario
+                LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario
                 ORDER BY v.id_venta DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -213,7 +213,7 @@ class Venta {
                 LEFT JOIN detalle_venta dv ON v.id_venta = dv.id_venta
                 LEFT JOIN producto p       ON dv.id_producto = p.id_producto
                 LEFT JOIN cliente c        ON v.id_cliente = c.id_cliente
-                WHERE c.id_usuarios = :id_usuario
+                WHERE c.id_usuario = :id_usuario
                 GROUP BY v.id_venta
                 ORDER BY v.id_venta DESC";
         $stmt = $this->conn->prepare($sql);

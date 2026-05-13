@@ -18,7 +18,7 @@ class Usuario {
 
     public function obtenerPorEmail($email) {
         $sql = "SELECT * FROM " . $this->tabla . " WHERE email = :email LIMIT 1";
-        $stmt = $this->conn->prepare($sql);+
+        $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":email", $email);
         $stmt->execute();
 
@@ -48,12 +48,12 @@ class Usuario {
 
             if ($datos['id_rol'] === '3') {
                 $sqlcliente = "INSERT INTO cliente
-                    (id_usuarios)
+                    (id_usuario)
                     VALUES
-                    (:id_usuarios)";
+                    (:id_usuario)";
 
                 $stmtcliente = $this->conn->prepare($sqlcliente);
-                $stmtcliente->bindParam(":id_usuarios", $id_usuario);
+                $stmtcliente->bindParam(":id_usuario", $id_usuario);
                 $stmtcliente->execute();
             }
 
