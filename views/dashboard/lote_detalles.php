@@ -35,7 +35,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <div class="space-y-8">
     <!-- Header with Breadcrumbs & Add Button -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden relative p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden relative p-8 flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center gap-6">
             <div class="w-16 h-16 rounded-2xl bg-sky-100 flex items-center justify-center text-sky-600 text-2xl font-bold shadow-sm">
                 <i class="fas fa-boxes-stacked"></i>
@@ -77,7 +77,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     <?php endif; ?>
 
     <!-- Table of details -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead class="bg-slate-50/50 text-slate-500 uppercase text-xs font-bold tracking-widest">
@@ -129,7 +129,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Modal Crear Detalle -->
 <div id="modalCrearDetalle" class="fixed inset-0 bg-slate-900/60 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
-    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-fade-in my-8">
+    <div class="glass-card rounded-[2.5rem] premium-shadow w-full max-w-2xl overflow-hidden animate-fade-in my-8">
         <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-emerald-50/50">
             <div>
                 <h3 class="text-2xl font-bold text-emerald-800">Paso 2: Añadir Detalle</h3>
@@ -145,22 +145,34 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Unidades</label>
-                    <input type="number" name="unidades" required min="1" placeholder="Ej. 100" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all font-bold text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-layer-group"></i></span>
+                        <input type="number" name="unidades" required min="1" placeholder="Ej. 100" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all font-bold text-slate-700">
+                    </div>
                 </div>
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Tipo de Envase</label>
-                    <input type="text" name="tipo_envase" required placeholder="Ej. Garrafón" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all font-bold text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-bottle-water"></i></span>
+                        <input type="text" name="tipo_envase" required placeholder="Ej. Garrafón" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all font-bold text-slate-700">
+                    </div>
                 </div>
             </div>
             
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Capacidad</label>
-                    <input type="text" name="capacidad" required placeholder="Ej. 20 Litros" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all font-bold text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-flask"></i></span>
+                        <input type="text" name="capacidad" required placeholder="Ej. 20 Litros" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all font-bold text-slate-700">
+                    </div>
                 </div>
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Proveedor</label>
-                    <input type="text" name="proveedor" required placeholder="Nombre del proveedor" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-truck-field"></i></span>
+                        <input type="text" name="proveedor" required placeholder="Nombre del proveedor" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all text-slate-700">
+                    </div>
                 </div>
             </div>
 
@@ -176,7 +188,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Modal Editar Detalle -->
 <div id="modalEditarDetalle" class="fixed inset-0 bg-slate-900/60 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
-    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-fade-in my-8">
+    <div class="glass-card rounded-[2.5rem] premium-shadow w-full max-w-2xl overflow-hidden animate-fade-in my-8">
         <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-amber-50/50">
             <div>
                 <h3 class="text-2xl font-bold text-amber-800">Editar Detalle</h3>
@@ -192,22 +204,34 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Unidades</label>
-                    <input type="number" name="unidades" id="edit_unidades" required min="1" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all font-bold text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-layer-group"></i></span>
+                        <input type="number" name="unidades" id="edit_unidades" required min="1" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all font-bold text-slate-700">
+                    </div>
                 </div>
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Tipo de Envase</label>
-                    <input type="text" name="tipo_envase" id="edit_tipo_envase" required class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all font-bold text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-bottle-water"></i></span>
+                        <input type="text" name="tipo_envase" id="edit_tipo_envase" required class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all font-bold text-slate-700">
+                    </div>
                 </div>
             </div>
             
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Capacidad</label>
-                    <input type="text" name="capacidad" id="edit_capacidad" required class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all font-bold text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-flask"></i></span>
+                        <input type="text" name="capacidad" id="edit_capacidad" required class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all font-bold text-slate-700">
+                    </div>
                 </div>
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Proveedor</label>
-                    <input type="text" name="proveedor" id="edit_proveedor" required class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-truck-field"></i></span>
+                        <input type="text" name="proveedor" id="edit_proveedor" required class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-amber-500/10 focus:border-amber-500 outline-none transition-all text-slate-700">
+                    </div>
                 </div>
             </div>
 

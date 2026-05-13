@@ -50,12 +50,104 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 <?php if (isset($_SESSION['alert'])): ?>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const alertIcon  = '<?= $_SESSION['alert']['icon'] ?>',
+              alertTitle = '<?= addslashes(htmlspecialchars($_SESSION['alert']['title'])) ?>',
+              alertText  = '<?= addslashes(htmlspecialchars($_SESSION['alert']['text'])) ?>';
+
+        const iconConfig = {
+            success: { gradient: 'linear-gradient(135deg,#10b981,#059669)', shadow: '0 20px 60px rgba(16,185,129,.35)', iconBg: '#ecfdf5', iconColor: '#10b981' },
+            error:   { gradient: 'linear-gradient(135deg,#ef4444,#dc2626)', shadow: '0 20px 60px rgba(239,68,68,.35)',  iconBg: '#fef2f2', iconColor: '#ef4444' },
+            warning: { gradient: 'linear-gradient(135deg,#f59e0b,#d97706)', shadow: '0 20px 60px rgba(245,158,11,.35)', iconBg: '#fffbeb', iconColor: '#f59e0b' },
+            info:    { gradient: 'linear-gradient(135deg,#3b82f6,#2563eb)', shadow: '0 20px 60px rgba(59,130,246,.35)',  iconBg: '#eff6ff', iconColor: '#3b82f6' },
+        };
+        const cfg = iconConfig[alertIcon] || iconConfig.info;
+
         Swal.fire({
-            icon: '<?= $_SESSION['alert']['icon'] ?>',
-            title: '<?= htmlspecialchars($_SESSION['alert']['title']) ?>',
-            text: '<?= htmlspecialchars($_SESSION['alert']['text']) ?>',
-            confirmButtonColor: '#4F46E5',
-            customClass: { popup: 'rounded-[2rem] glass-card font-outfit' }
+            title: alertTitle,
+            text:  alertText,
+            icon:  alertIcon,
+            confirmButtonText: '<i class="fas fa-check mr-2"></i>Entendido',
+            confirmButtonColor: 'transparent',
+            showClass: { popup: 'animate__animated animate__fadeInDown animate__faster' },
+            hideClass: { popup: 'animate__animated animate__fadeOutUp animate__faster' },
+            customClass: {
+                popup:            'swal-premium-popup font-outfit',
+                title:            'swal-premium-title',
+                htmlContainer:    'swal-premium-text',
+                confirmButton:    'swal-premium-btn',
+                icon:             'swal-premium-icon',
+            },
+            didOpen: (popup) => {
+                // Estilo del popup
+                popup.style.borderRadius    = '2rem';
+                popup.style.padding         = '2.5rem 2rem 2rem';
+                popup.style.boxShadow       = cfg.shadow;
+                popup.style.border          = '1px solid rgba(255,255,255,0.8)';
+                popup.style.background      = 'rgba(255,255,255,0.92)';
+                popup.style.backdropFilter  = 'blur(20px)';
+                popup.style.fontFamily      = "'Outfit', sans-serif";
+
+                // Estilo del ícono
+                const icon = popup.querySelector('.swal2-icon');
+                if (icon) {
+                    icon.style.border           = 'none';
+                    icon.style.width            = '80px';
+                    icon.style.height           = '80px';
+                    icon.style.borderRadius     = '1.5rem';
+                    icon.style.background       = cfg.iconBg;
+                    icon.style.margin           = '0 auto 1.5rem';
+                    icon.style.display          = 'flex';
+                    icon.style.alignItems       = 'center';
+                    icon.style.justifyContent   = 'center';
+                    // Colorear el SVG interno
+                    icon.querySelectorAll('[class*="swal2-"]').forEach(el => {
+                        el.style.borderColor = 'transparent';
+                        el.style.color       = cfg.iconColor;
+                    });
+                    const lines = icon.querySelectorAll('.swal2-success-line-tip, .swal2-success-line-long');
+                    lines.forEach(l => l.style.background = cfg.iconColor);
+                    const ring = icon.querySelector('.swal2-success-ring');
+                    if (ring) ring.style.border = `4px solid ${cfg.iconColor}40`;
+                    const xMark = icon.querySelectorAll('.swal2-x-mark-line-left, .swal2-x-mark-line-right');
+                    xMark.forEach(l => l.style.background = cfg.iconColor);
+                }
+
+                // Estilo del título
+                const title = popup.querySelector('.swal2-title');
+                if (title) {
+                    title.style.fontSize   = '1.6rem';
+                    title.style.fontWeight = '800';
+                    title.style.color      = '#1e293b';
+                    title.style.margin     = '0 0 0.5rem';
+                    title.style.padding    = '0';
+                }
+
+                // Estilo del texto
+                const text = popup.querySelector('.swal2-html-container, .swal2-content');
+                if (text) {
+                    text.style.fontSize  = '0.95rem';
+                    text.style.color     = '#64748b';
+                    text.style.margin    = '0 0 1.5rem';
+                    text.style.padding   = '0';
+                }
+
+                // Estilo del botón
+                const btn = popup.querySelector('.swal2-confirm');
+                if (btn) {
+                    btn.style.background     = cfg.gradient;
+                    btn.style.border         = 'none';
+                    btn.style.borderRadius   = '0.875rem';
+                    btn.style.padding        = '0.75rem 2rem';
+                    btn.style.fontSize       = '0.95rem';
+                    btn.style.fontWeight     = '700';
+                    btn.style.color          = '#fff';
+                    btn.style.boxShadow      = cfg.shadow.replace('60px', '25px');
+                    btn.style.cursor         = 'pointer';
+                    btn.style.transition     = 'transform .15s, box-shadow .15s';
+                    btn.onmouseenter = () => { btn.style.transform = 'translateY(-2px)'; };
+                    btn.onmouseleave = () => { btn.style.transform = ''; };
+                }
+            }
         });
     });
 </script>
@@ -66,11 +158,11 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     <!-- ── Header Section ─────────────────────────────────────────────────────── -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 animate-fade-up">
         <div>
-            <div class="inline-block px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-sm mb-4 shadow-sm">
-                <i class="fas fa-sparkles mr-2"></i>Dashboard Pro
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-sm mb-4 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>Gestión en Tiempo Real
             </div>
             <h1 class="text-4xl md:text-6xl font-black text-slate-800 tracking-tight leading-tight">Centro de <br class="hidden md:block" /><span class="premium-gradient-text">Ventas</span></h1>
-            <p class="text-slate-500 mt-3 text-lg font-medium max-w-xl">Gestiona pedidos, maximiza tus ingresos y supervisa el estado de ventas en tiempo real con nuestra interfaz de alto rendimiento.</p>
+            <p class="text-slate-500 mt-3 text-base font-medium max-w-md">Supervisa pedidos, ingresos y estados de entrega desde un solo lugar.</p>
         </div>
         <div class="flex items-center gap-4">
             <?php if ($pendientes > 0): ?>
@@ -99,76 +191,113 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- ── Estadísticas ─────────────────────────────────────────────────────── -->
+    <?php
+    $totalVentas = max(1, count($ventas));
+    $tarjetas = [
+        ['Pendientes', $stats['Pendiente'],  'fa-clock',        'from-amber-400 to-orange-500',  'text-amber-600',  'bg-amber-50',  'shadow-[0_10px_30px_rgba(245,158,11,0.15)]',  'bg-amber-400',  'Esperando atención'],
+        ['En Proceso', $stats['En Proceso'], 'fa-gears',        'from-blue-400 to-indigo-500',   'text-blue-600',   'bg-blue-50',   'shadow-[0_10px_30px_rgba(59,130,246,0.15)]',   'bg-blue-400',   'En preparación'],
+        ['Entregados', $stats['Entregado'],  'fa-circle-check', 'from-emerald-400 to-teal-500',  'text-emerald-600','bg-emerald-50','shadow-[0_10px_30px_rgba(16,185,129,0.15)]',  'bg-emerald-400','Completados con éxito'],
+        ['Cancelados', $stats['Cancelado'],  'fa-circle-xmark', 'from-rose-400 to-red-500',      'text-rose-600',   'bg-rose-50',   'shadow-[0_10px_30px_rgba(225,29,72,0.15)]',   'bg-rose-400',   'No procesados'],
+    ];
+    ?>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up delay-100">
-        <?php
-        $tarjetas = [
-            ['Pendientes',     $stats['Pendiente'],    'fa-clock',         'from-amber-400 to-orange-500',   'text-amber-600', 'bg-amber-50', 'shadow-[0_10px_30px_rgba(245,158,11,0.15)]'],
-            ['En Proceso',     $stats['En Proceso'],   'fa-gears',         'from-blue-400 to-indigo-500',    'text-blue-600',  'bg-blue-50',  'shadow-[0_10px_30px_rgba(59,130,246,0.15)]'],
-            ['Entregados',     $stats['Entregado'],    'fa-circle-check',  'from-emerald-400 to-teal-500',   'text-emerald-600','bg-emerald-50', 'shadow-[0_10px_30px_rgba(16,185,129,0.15)]'],
-            ['Cancelados',     $stats['Cancelado'],    'fa-circle-xmark',  'from-rose-400 to-red-500',       'text-rose-600',   'bg-rose-50',   'shadow-[0_10px_30px_rgba(225,29,72,0.15)]'],
-        ];
-        foreach ($tarjetas as [$label, $val, $ico, $grad, $txt, $bg, $shadow]):
+        <?php foreach ($tarjetas as [$label, $val, $ico, $grad, $txt, $bg, $shadow, $barColor, $desc]):
+            $pct = $totalVentas > 0 ? round(($val / $totalVentas) * 100) : 0;
         ?>
-        <div class="stat-card glass-card rounded-[2.5rem] p-7 relative overflow-hidden group">
-            <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br <?= $grad ?> opacity-10 rounded-full blur-[30px] group-hover:opacity-30 group-hover:scale-150 transition-all duration-700"></div>
-            
-            <div class="flex justify-between items-start mb-6 relative z-10">
-                <div class="w-16 h-16 rounded-[1.2rem] <?= $bg ?> flex items-center justify-center <?= $txt ?> text-3xl border border-white/80 <?= $shadow ?> transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500">
+        <div class="stat-card glass-card rounded-[2.5rem] p-7 relative overflow-hidden group cursor-default">
+            <div class="absolute top-0 right-0 w-44 h-44 bg-gradient-to-br <?= $grad ?> opacity-10 rounded-full blur-[40px] group-hover:opacity-25 group-hover:scale-150 transition-all duration-700"></div>
+
+            <div class="flex justify-between items-start mb-5 relative z-10">
+                <div class="w-14 h-14 rounded-[1.2rem] <?= $bg ?> flex items-center justify-center <?= $txt ?> text-2xl border border-white/80 <?= $shadow ?> transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500">
                     <i class="fas <?= $ico ?>"></i>
                 </div>
                 <?php if ($label === 'Pendientes' && $val > 0): ?>
-                <div class="bg-gradient-to-r from-red-500 to-rose-600 text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-[0_0_15px_rgba(225,29,72,0.5)] animate-pulse uppercase tracking-widest border border-red-400/50">¡NUEVO!</div>
+                <div class="bg-gradient-to-r from-red-500 to-rose-600 text-white text-[9px] font-black px-2.5 py-1 rounded-full shadow-[0_0_12px_rgba(225,29,72,0.5)] animate-pulse uppercase tracking-widest">¡NUEVO!</div>
+                <?php else: ?>
+                <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest"><?= $pct ?>%</span>
                 <?php endif; ?>
             </div>
-            
+
             <div class="relative z-10">
-                <div class="text-5xl font-black text-slate-800 tracking-tighter mb-2 group-hover:translate-x-1 transition-transform"><?= $val ?></div>
-                <div class="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] group-hover:text-slate-800 transition-colors"><?= $label ?></div>
+                <div class="text-5xl font-black text-slate-800 tracking-tighter mb-1 group-hover:translate-x-1 transition-transform"><?= $val ?></div>
+                <div class="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] mb-1 group-hover:text-slate-700 transition-colors"><?= $label ?></div>
+                <div class="text-[10px] text-slate-400 font-medium mb-4"><?= $desc ?></div>
+                <!-- Progress bar -->
+                <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                    <div class="h-full <?= $barColor ?> rounded-full transition-all duration-700 group-hover:opacity-80" style="width: <?= $pct ?>%"></div>
+                </div>
             </div>
         </div>
         <?php endforeach; ?>
     </div>
 
     <!-- ── Total ingresos ──────────────────────────────────────────────────── -->
-    <div class="relative rounded-[3rem] p-12 overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] group stat-card animate-fade-up delay-200">
-        <!-- Background -->
+    <div class="relative rounded-[3rem] p-10 md:p-12 overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] group stat-card animate-fade-up delay-200">
         <div class="absolute inset-0 bg-[#0B1120]"></div>
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
         <div class="absolute -top-32 -right-32 w-[500px] h-[500px] bg-gradient-to-br from-indigo-500/40 to-rose-500/40 rounded-full blur-[100px] group-hover:scale-110 transition-transform duration-1000"></div>
         <div class="absolute -bottom-32 -left-32 w-[400px] h-[400px] bg-blue-600/30 rounded-full blur-[100px]"></div>
-        
-        <!-- Abstract Wave/Grid overlay -->
         <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_20%,transparent_100%)]"></div>
-        
+
         <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+            <!-- Left: wallet + amount -->
             <div class="flex flex-col md:flex-row items-center md:items-start gap-8 w-full">
-                <div class="w-28 h-28 rounded-[2rem] bg-gradient-to-br from-indigo-500 via-purple-500 to-rose-500 p-[3px] shadow-[0_0_40px_rgba(139,92,246,0.4)] shrink-0 group-hover:rotate-12 transition-transform duration-700">
-                    <div class="w-full h-full bg-[#0B1120] rounded-[1.8rem] flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-br from-indigo-300 to-rose-300 text-5xl">
+                <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-indigo-500 via-purple-500 to-rose-500 p-[3px] shadow-[0_0_40px_rgba(139,92,246,0.4)] shrink-0 group-hover:rotate-12 transition-transform duration-700">
+                    <div class="w-full h-full bg-[#0B1120] rounded-[1.8rem] flex items-center justify-center text-transparent bg-clip-text bg-gradient-to-br from-indigo-300 to-rose-300 text-4xl">
                         <i class="fas fa-wallet drop-shadow-lg"></i>
                     </div>
                 </div>
-                <div class="text-center md:text-left w-full">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-indigo-300 text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                        <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Balance General Confimado
+                <div class="text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-indigo-300 text-xs font-bold uppercase tracking-[0.2em] mb-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Balance General Confirmado
                     </div>
-                    <div class="text-6xl md:text-7xl lg:text-[5.5rem] font-black text-white tracking-tighter flex items-start justify-center md:justify-start gap-2 [text-shadow:0_10px_30px_rgba(0,0,0,0.5)]">
-                        <span class="text-indigo-400 text-4xl lg:text-5xl mt-2">$</span><?= number_format($stats['total_ingresos'], 2) ?>
+                    <div class="text-5xl md:text-7xl lg:text-[5rem] font-black text-white tracking-tighter flex items-start justify-center md:justify-start gap-2 [text-shadow:0_10px_30px_rgba(0,0,0,0.5)]">
+                        <span class="text-indigo-400 text-3xl lg:text-4xl mt-2">$</span><?= number_format($stats['total_ingresos'], 2) ?>
                     </div>
+                    <p class="text-slate-400 text-sm font-medium mt-2">Ingresos totales de ventas entregadas</p>
                 </div>
             </div>
-            
-            <div class="hidden lg:flex w-full max-w-sm justify-end items-end h-28 gap-3">
-                <?php for($i=1; $i<=8; $i++): 
-                    $h = rand(30, 100);
-                    $delay = $i * 100;
-                ?>
-                <div class="w-4 rounded-t-xl bg-gradient-to-t from-indigo-600/20 to-indigo-400/80 hover:to-rose-400 transition-all duration-500 cursor-pointer" style="height: <?= $h ?>%; transition-delay: <?= $delay ?>ms;"></div>
-                <?php endfor; ?>
+
+            <!-- Right: mini stats + bars -->
+            <div class="flex flex-col gap-6 w-full lg:w-auto lg:items-end shrink-0">
+                <!-- Mini KPIs -->
+                <div class="flex gap-4">
+                    <div class="text-center px-5 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <div class="text-2xl font-black text-white"><?= count($ventas) ?></div>
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">Total pedidos</div>
+                    </div>
+                    <div class="text-center px-5 py-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm">
+                        <div class="text-2xl font-black text-emerald-400"><?= $stats['Entregado'] ?></div>
+                        <div class="text-[10px] text-emerald-400/70 font-bold uppercase tracking-wider mt-0.5">Entregados</div>
+                    </div>
+                    <div class="text-center px-5 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 backdrop-blur-sm">
+                        <div class="text-2xl font-black text-amber-400"><?= $stats['Pendiente'] ?></div>
+                        <div class="text-[10px] text-amber-400/70 font-bold uppercase tracking-wider mt-0.5">Pendientes</div>
+                    </div>
+                </div>
+                <!-- Decorative bars -->
+                <div class="hidden lg:flex justify-end items-end h-20 gap-2">
+                    <?php
+                    $heights = [35, 55, 40, 75, 50, 90, 65, 100];
+                    foreach ($heights as $i => $h):
+                        $delay = ($i + 1) * 80;
+                    ?>
+                    <div class="w-3.5 rounded-t-lg bg-gradient-to-t from-indigo-600/20 to-indigo-400/70 hover:to-rose-400 transition-all duration-500 cursor-pointer" style="height:<?= $h ?>%;transition-delay:<?= $delay ?>ms"></div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ── Tabla de pedidos ────────────────────────────────────────────────── -->
+    <?php
+    $filtros = [
+        'Pendiente'  => [$stats['Pendiente'], 'amber'],
+        'En Proceso' => [$stats['En Proceso'], 'blue'],
+        'Entregado'  => [$stats['Entregado'], 'emerald'],
+        'Cancelado'  => [$stats['Cancelado'], 'red'],
+    ];
+    ?>
     <div class="animate-fade-up delay-300">
         
         <!-- Filtros -->
@@ -182,38 +311,39 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                     <p class="text-slate-500 text-sm font-medium mt-1">Explora y gestiona todo el historial de ventas</p>
                 </div>
             </div>
-            
-            <div class="flex flex-wrap gap-2 p-2 bg-slate-100/60 rounded-2xl backdrop-blur-md border border-white w-full xl:w-auto shadow-inner">
-                <button onclick="filtrarTabla('todos')" class="filter-btn active flex-1 xl:flex-none px-6 py-3 rounded-xl font-bold text-sm transition-all bg-white text-indigo-600 shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-slate-100" data-filter="todos">
-                    Todos <span class="ml-2 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs shadow-sm"><?= count($ventas) ?></span>
-                </button>
-                <?php
-                $filtros = [
-                    'Pendiente'  => [$stats['Pendiente'], 'amber'],
-                    'En Proceso' => [$stats['En Proceso'], 'blue'],
-                    'Entregado'  => [$stats['Entregado'], 'emerald'],
-                    'Cancelado'  => [$stats['Cancelado'], 'red'],
-                ];
-                foreach ($filtros as $f => [$cnt, $color]):
-                ?>
-                <button onclick="filtrarTabla('<?= $f ?>')" class="filter-btn flex-1 xl:flex-none px-6 py-3 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-<?= $color ?>-600 hover:bg-white hover:shadow-sm" data-filter="<?= $f ?>" data-color="<?= $color ?>">
-                    <?= $f ?> <span class="ml-2 px-2.5 py-1 rounded-lg bg-slate-200/50 text-slate-600 text-xs cnt-badge"><?= $cnt ?></span>
-                </button>
-                <?php endforeach; ?>
+
+            <div class="flex flex-col sm:flex-row gap-3 w-full xl:w-auto items-stretch sm:items-center">
+                <!-- Buscador -->
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none"></i>
+                    <input type="text" id="searchVentas" placeholder="Buscar cliente, pedido..."
+                        class="w-full sm:w-56 pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 outline-none transition-all text-sm font-medium shadow-sm">
+                </div>
+                <!-- Filtros de estado -->
+                <div class="flex flex-wrap gap-2 p-2 bg-slate-100/60 rounded-2xl backdrop-blur-md border border-white shadow-inner">
+                    <button onclick="filtrarTabla('todos')" class="filter-btn active flex-1 xl:flex-none px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-indigo-600 shadow-[0_4px_15px_rgba(0,0,0,0.05)] border border-slate-100" data-filter="todos">
+                        Todos <span class="ml-1.5 px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 text-xs shadow-sm"><?= count($ventas) ?></span>
+                    </button>
+                    <?php foreach ($filtros as $f => [$cnt, $color]): ?>
+                    <button onclick="filtrarTabla('<?= $f ?>')" class="filter-btn flex-1 xl:flex-none px-5 py-2.5 rounded-xl font-bold text-sm transition-all text-slate-500 hover:text-<?= $color ?>-600 hover:bg-white hover:shadow-sm" data-filter="<?= $f ?>" data-color="<?= $color ?>">
+                        <?= $f ?> <span class="ml-1.5 px-2 py-0.5 rounded-lg bg-slate-200/50 text-slate-600 text-xs cnt-badge"><?= $cnt ?></span>
+                    </button>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
 
         <div class="overflow-x-auto custom-scrollbar relative min-h-[400px] px-2 pb-10">
             <table class="w-full text-left table-separated" id="tablaVentas">
-                <thead class="text-slate-400 text-xs font-black uppercase tracking-[0.15em] sticky top-0 z-20">
+                <thead class="text-slate-400 text-xs font-black uppercase tracking-[0.15em] sticky top-0 z-20 bg-slate-50/80 backdrop-blur-sm">
                     <tr>
-                        <th class="px-8 py-4">ID Pedido</th>
-                        <th class="px-8 py-4">Información de Cliente</th>
-                        <th class="px-8 py-4">Fecha / Hora</th>
-                        <th class="px-8 py-4">Desglose de Productos</th>
-                        <th class="px-8 py-4 text-right">Total Pagar</th>
-                        <th class="px-8 py-4 text-center">Estado</th>
-                        <th class="px-8 py-4 text-center">Gestión</th>
+                        <th class="px-8 py-5 rounded-tl-2xl">ID Pedido</th>
+                        <th class="px-8 py-5">Información de Cliente</th>
+                        <th class="px-8 py-5">Fecha / Hora</th>
+                        <th class="px-8 py-5">Desglose de Productos</th>
+                        <th class="px-8 py-5 text-right">Total Pagar</th>
+                        <th class="px-8 py-5 text-center">Estado</th>
+                        <th class="px-8 py-5 text-center rounded-tr-2xl">Gestión</th>
                     </tr>
                 </thead>
                 <tbody id="tablaBody">
@@ -246,11 +376,16 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                             </div>
                             <div>
                                 <div class="font-extrabold text-slate-800 text-lg mb-0.5 tracking-tight"><?= htmlspecialchars($v['cliente_nombre'] ?? 'N/A') ?></div>
-                                <div class="text-xs text-slate-500 font-bold flex flex-col gap-1">
+                                <div class="text-xs text-slate-500 font-bold flex flex-col gap-1.5">
                                     <?php if (!empty($v['cliente_telefono'])): ?>
-                                    <span class="flex items-center gap-1.5"><i class="fas fa-phone-alt text-indigo-400"></i><?= htmlspecialchars($v['cliente_telefono']) ?></span>
+                                    <span class="flex items-center gap-1.5"><i class="fas fa-phone-alt text-indigo-400 w-3"></i><?= htmlspecialchars($v['cliente_telefono']) ?></span>
                                     <?php endif; ?>
-                                    <span class="flex items-center gap-1.5"><i class="fas fa-envelope text-indigo-400"></i><?= htmlspecialchars($v['cliente_email'] ?? '') ?></span>
+                                    <?php if (!empty($v['cliente_email'])): ?>
+                                    <span class="flex items-center gap-1.5"><i class="fas fa-envelope text-indigo-400 w-3"></i><?= htmlspecialchars($v['cliente_email']) ?></span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($v['cliente_direccion'])): ?>
+                                    <span class="flex items-center gap-1.5"><i class="fas fa-map-marker-alt text-indigo-400 w-3"></i><?= htmlspecialchars($v['cliente_direccion']) ?></span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -327,11 +462,14 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 <?php if (empty($ventas)): ?>
                 <tr>
                     <td colspan="7" class="px-8 py-24 text-center">
-                        <div class="w-24 h-24 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-slate-300 shadow-inner">
+                        <div class="w-24 h-24 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-indigo-300 shadow-inner border border-indigo-100/50">
                             <i class="fas fa-receipt text-4xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-700 mb-1">Sin pedidos registrados</h3>
-                        <p class="text-slate-400 font-medium">No se encontraron ventas en el sistema.</p>
+                        <h3 class="text-xl font-black text-slate-700 mb-2">Sin pedidos registrados</h3>
+                        <p class="text-slate-400 font-medium mb-6">No se encontraron ventas en el sistema.</p>
+                        <button onclick="openModalPOS()" class="inline-flex items-center gap-2 px-6 py-3 premium-gradient text-white rounded-2xl font-bold text-sm shadow-lg shadow-indigo-500/30 hover:-translate-y-1 transition-all">
+                            <i class="fas fa-plus"></i> Registrar primera venta
+                        </button>
                     </td>
                 </tr>
                 <?php endif; ?>
@@ -345,44 +483,54 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Modal cambiar estado -->
 <div id="modalEstado" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300 border border-white" id="modalEstadoContent">
-        <div class="relative p-8 border-b border-slate-100 overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+    <div class="glass-card rounded-[2.5rem] premium-shadow w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300 border border-white" id="modalEstadoContent">
+        <div class="relative p-8 overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+            <div class="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
             <div class="flex justify-between items-center relative z-10">
-                <div>
-                    <h3 class="text-2xl font-extrabold text-slate-800">Actualizar Estado</h3>
-                    <div class="inline-flex items-center gap-2 mt-2 px-3 py-1 rounded-lg bg-slate-100 text-sm font-bold text-slate-600">
-                        <i class="fas fa-hashtag text-slate-400"></i><span id="modalPedidoId">—</span>
+                <div class="flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white text-lg">
+                        <i class="fas fa-arrows-rotate"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-extrabold text-white">Actualizar Estado</h3>
+                        <div class="inline-flex items-center gap-1.5 mt-1 px-2.5 py-0.5 rounded-lg bg-white/15 text-white/80 text-xs font-bold">
+                            <i class="fas fa-hashtag text-white/60 text-[10px]"></i><span id="modalPedidoId">—</span>
+                        </div>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all border border-slate-200 flex items-center justify-center">
-                    <i class="fas fa-times"></i>
+                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white/20 text-white hover:bg-white hover:text-rose-500 transition-all border border-white/30 flex items-center justify-center">
+                    <i class="fas fa-times text-sm"></i>
                 </button>
             </div>
         </div>
         <form action="../../controllers/VentaController.php?accion=cambiar_estado" method="POST" class="p-8">
             <input type="hidden" name="id_venta" id="modalIdVenta">
 
-            <div class="space-y-4 mb-8">
+            <div class="space-y-3 mb-8" id="estadoOpciones">
                 <?php
                 $opciones = [
-                    ['Pendiente',  'fa-clock',        'peer-checked:bg-amber-50 peer-checked:border-amber-400 peer-checked:text-amber-700 peer-checked:shadow-md peer-checked:shadow-amber-500/10',   'hover:bg-amber-50/50 hover:border-amber-200 text-slate-500'],
-                    ['En Proceso', 'fa-gears',         'peer-checked:bg-blue-50 peer-checked:border-blue-400 peer-checked:text-blue-700 peer-checked:shadow-md peer-checked:shadow-blue-500/10',     'hover:bg-blue-50/50 hover:border-blue-200 text-slate-500'],
-                    ['Entregado',  'fa-circle-check',  'peer-checked:bg-emerald-50 peer-checked:border-emerald-400 peer-checked:text-emerald-700 peer-checked:shadow-md peer-checked:shadow-emerald-500/10', 'hover:bg-emerald-50/50 hover:border-emerald-200 text-slate-500'],
-                    ['Cancelado',  'fa-circle-xmark',  'peer-checked:bg-red-50 peer-checked:border-red-400 peer-checked:text-red-700 peer-checked:shadow-md peer-checked:shadow-red-500/10',         'hover:bg-red-50/50 hover:border-red-200 text-slate-500'],
+                    ['Pendiente',  'fa-clock',       'amber',   '#F59E0B', '#FEF3C7', '#FDE68A'],
+                    ['En Proceso', 'fa-gears',        'blue',    '#3B82F6', '#EFF6FF', '#BFDBFE'],
+                    ['Entregado',  'fa-circle-check', 'emerald', '#10B981', '#ECFDF5', '#A7F3D0'],
+                    ['Cancelado',  'fa-circle-xmark', 'red',     '#EF4444', '#FEF2F2', '#FECACA'],
                 ];
-                foreach ($opciones as [$opt, $ico, $pcls, $hcls]):
+                foreach ($opciones as [$opt, $ico, $color, $colorHex, $bgHex, $borderHex]):
                 ?>
-                <label class="relative block cursor-pointer group">
-                    <input type="radio" name="estado" value="<?= $opt ?>" class="peer sr-only" required>
-                    <div class="flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-100 transition-all duration-200 <?= $hcls ?> <?= $pcls ?>">
-                        <div class="w-12 h-12 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center text-lg peer-checked:scale-110 transition-transform group-hover:scale-105">
+                <label class="estado-option-label block cursor-pointer"
+                       data-value="<?= $opt ?>"
+                       data-color="<?= $colorHex ?>"
+                       data-bg="<?= $bgHex ?>"
+                       data-border="<?= $borderHex ?>">
+                    <input type="radio" name="estado" value="<?= $opt ?>" class="sr-only estado-radio" required>
+                    <div class="estado-option-card flex items-center gap-4 p-4 rounded-2xl border-2 border-slate-100 bg-white transition-all duration-200 hover:border-slate-200 hover:bg-slate-50">
+                        <div class="estado-icon-wrap w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-xl text-slate-400 transition-all duration-200 shrink-0">
                             <i class="fas <?= $ico ?>"></i>
                         </div>
                         <div class="flex-1">
-                            <div class="font-bold text-base"><?= $opt ?></div>
+                            <div class="font-bold text-base text-slate-600 estado-label-text transition-colors duration-200"><?= $opt ?></div>
                         </div>
-                        <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center opacity-0 peer-checked:opacity-100 peer-checked:border-current peer-checked:bg-current transition-all">
+                        <div class="estado-check w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center opacity-0 transition-all duration-200 shrink-0">
                             <i class="fas fa-check text-white text-[10px]"></i>
                         </div>
                     </div>
@@ -402,7 +550,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Modal POS -->
 <div id="modalPOS" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 overflow-y-auto opacity-0 transition-opacity duration-300">
-    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-4xl overflow-hidden my-8 transform scale-95 transition-transform duration-300" id="modalPOSContent">
+    <div class="glass-card rounded-[2.5rem] premium-shadow w-full max-w-4xl overflow-hidden my-8 transform scale-95 transition-transform duration-300" id="modalPOSContent">
         <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-slate-900 to-slate-800 text-white relative overflow-hidden">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
@@ -468,25 +616,32 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
             <!-- Columna Derecha: Resumen y Acción -->
             <div class="w-full lg:w-[320px] shrink-0">
-                <div class="bg-slate-50 rounded-[2rem] p-6 border border-slate-200 sticky top-8">
-                    <h4 class="font-bold text-slate-800 mb-6 text-lg border-b border-slate-200 pb-4">Resumen de Venta</h4>
-                    
-                    <div class="space-y-4 mb-8" id="posResumenItems">
-                        <!-- Resumen dinámico -->
-                        <div class="text-slate-400 text-sm text-center py-4 italic">Agrega productos para ver el resumen</div>
+                <div class="bg-gradient-to-b from-slate-50 to-white rounded-[2rem] p-6 border border-slate-200/80 sticky top-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)]">
+                    <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm shadow-lg shadow-indigo-500/30">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h4 class="font-black text-slate-800 text-lg tracking-tight">Resumen de Venta</h4>
                     </div>
                     
-                    <div class="border-t border-slate-200 border-dashed pt-6 mb-8">
-                        <div class="flex justify-between items-end">
-                            <p class="text-slate-500 font-bold uppercase tracking-wider text-xs mb-1">Total a Pagar</p>
-                            <p class="text-4xl font-black text-indigo-600 tracking-tight" id="posTotalDisplay">$0.00</p>
+                    <div class="space-y-2.5 mb-6 min-h-[80px]" id="posResumenItems">
+                        <div class="text-slate-400 text-sm text-center py-6 italic flex flex-col items-center gap-2">
+                            <i class="fas fa-box-open text-2xl text-slate-200"></i>
+                            Agrega productos para ver el resumen
                         </div>
                     </div>
+                    
+                    <div class="border-t border-dashed border-slate-200 pt-5 mb-6">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-slate-400 font-bold uppercase tracking-wider text-xs">Total a Pagar</p>
+                        </div>
+                        <p class="text-4xl font-black text-indigo-600 tracking-tight" id="posTotalDisplay">$0.00</p>
+                    </div>
 
-                    <button type="submit" class="w-full premium-gradient text-white py-4 rounded-2xl font-bold shadow-xl shadow-indigo-500/30 transition-all transform active:scale-95 flex items-center justify-center gap-3 text-lg hover:shadow-indigo-500/50">
-                        <i class="fas fa-check-circle"></i> Procesar Venta
+                    <button type="submit" class="w-full premium-gradient text-white py-4 rounded-2xl font-bold shadow-xl shadow-indigo-500/30 transition-all transform active:scale-95 hover:-translate-y-1 flex items-center justify-center gap-3 text-base hover:shadow-indigo-500/50">
+                        <i class="fas fa-check-circle text-lg"></i> Procesar Venta
                     </button>
-                    <button type="button" onclick="closeModalPOS()" class="w-full mt-3 py-3 text-slate-500 font-bold hover:bg-slate-200/50 rounded-xl transition-colors">
+                    <button type="button" onclick="closeModalPOS()" class="w-full mt-3 py-3 text-slate-400 font-bold hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-colors text-sm">
                         Cancelar
                     </button>
                 </div>
@@ -525,12 +680,57 @@ function hideModalWithAnim(modalId, contentId) {
 }
 
 // ─── Modal Estado ───────────────────────────────────────────────────────────
+function applyEstadoSelection(selectedValue) {
+    document.querySelectorAll('.estado-option-label').forEach(label => {
+        const radio    = label.querySelector('.estado-radio');
+        const card     = label.querySelector('.estado-option-card');
+        const iconWrap = label.querySelector('.estado-icon-wrap');
+        const labelTxt = label.querySelector('.estado-label-text');
+        const check    = label.querySelector('.estado-check');
+        const isSelected = label.dataset.value === selectedValue;
+
+        if (isSelected) {
+            const color  = label.dataset.color;
+            const bg     = label.dataset.bg;
+            const border = label.dataset.border;
+            card.style.backgroundColor = bg;
+            card.style.borderColor     = border;
+            iconWrap.style.backgroundColor = bg;
+            iconWrap.style.borderColor     = border;
+            iconWrap.style.color           = color;
+            iconWrap.style.transform       = 'scale(1.1)';
+            labelTxt.style.color           = color;
+            check.style.opacity            = '1';
+            check.style.backgroundColor    = color;
+            check.style.borderColor        = color;
+        } else {
+            card.style.backgroundColor = '';
+            card.style.borderColor     = '';
+            iconWrap.style.backgroundColor = '';
+            iconWrap.style.borderColor     = '';
+            iconWrap.style.color           = '';
+            iconWrap.style.transform       = '';
+            labelTxt.style.color           = '';
+            check.style.opacity            = '0';
+            check.style.backgroundColor    = '';
+            check.style.borderColor        = '';
+        }
+    });
+}
+
 function openModalEstado(id_venta, estadoActual) {
     document.getElementById('modalIdVenta').value = id_venta;
     document.getElementById('modalPedidoId').textContent = strPad(id_venta, 4);
-    document.querySelectorAll('input[name="estado"]').forEach(r => {
+    document.querySelectorAll('.estado-radio').forEach(r => {
         r.checked = (r.value === estadoActual);
     });
+    applyEstadoSelection(estadoActual);
+
+    // Bind click on each label to update visuals
+    document.querySelectorAll('.estado-option-label').forEach(label => {
+        label.onclick = () => applyEstadoSelection(label.dataset.value);
+    });
+
     showModalWithAnim('modalEstado', 'modalEstadoContent');
 }
 
@@ -560,7 +760,7 @@ function addProductRow() {
     }).join('');
 
     const row = document.createElement('div');
-    row.className = 'pos-row flex flex-col sm:flex-row items-center gap-3 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm transition-all hover:border-indigo-200 hover:shadow-md';
+    row.className = 'pos-row flex flex-col sm:flex-row items-center gap-3 p-4 bg-white rounded-2xl border-2 border-slate-100 shadow-sm transition-all hover:border-indigo-200 hover:shadow-[0_4px_20px_rgba(79,70,229,0.08)]';
     row.innerHTML = `
         <div class="flex-1 w-full">
             <div class="relative">
@@ -624,21 +824,30 @@ function updatePOSTotal() {
         
         // Add to resumen
         resumenContainer.innerHTML += `
-            <div class="flex justify-between items-center text-sm">
-                <div class="flex-1 truncate pr-2 text-slate-600 font-medium">
-                    <span class="text-indigo-600 font-bold mr-1">${qty}x</span> ${nombre}
+            <div class="flex justify-between items-center gap-2 p-2.5 rounded-xl bg-white border border-slate-100 shadow-sm text-sm">
+                <div class="flex items-center gap-2 flex-1 min-w-0">
+                    <span class="w-6 h-6 rounded-lg bg-indigo-50 text-indigo-600 font-black text-xs flex items-center justify-center shrink-0">${qty}</span>
+                    <span class="truncate text-slate-600 font-semibold">${nombre}</span>
                 </div>
-                <div class="font-bold text-slate-800">$${subtotal.toFixed(2)}</div>
+                <div class="font-black text-slate-800 shrink-0">$${subtotal.toFixed(2)}</div>
             </div>
         `;
     });
     
     if(!hasItems) {
-        resumenContainer.innerHTML = '<div class="text-slate-400 text-sm text-center py-4 italic">Agrega productos para ver el resumen</div>';
+        resumenContainer.innerHTML = '<div class="text-slate-400 text-sm text-center py-6 italic flex flex-col items-center gap-2"><i class="fas fa-box-open text-2xl text-slate-200"></i>Agrega productos para ver el resumen</div>';
     }
     
     document.getElementById('posTotalDisplay').textContent = '$' + total.toFixed(2);
 }
+
+// ─── Búsqueda en tabla ──────────────────────────────────────────────────────
+document.getElementById('searchVentas').addEventListener('input', function() {
+    const term = this.value.toLowerCase().trim();
+    document.querySelectorAll('.pedido-row').forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
+    });
+});
 
 // ─── Utilities ──────────────────────────────────────────────────────────────
 window.onclick = function(e) {

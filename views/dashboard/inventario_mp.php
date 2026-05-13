@@ -38,10 +38,36 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<?php 
+$mp_bajas = [];
+foreach ($stats['por_tipo'] as $tipo) {
+    if ((int)$tipo['total'] <= 10) {
+        $mp_bajas[] = $tipo['tipo_envase'] ?: 'Materia Prima';
+    }
+}
+if (!empty($mp_bajas)): 
+?>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'warning',
+      title: 'Materia Prima Baja',
+      html: 'Queda poco stock de:<br><b><?= htmlspecialchars(implode(", ", $mp_bajas)) ?></b>',
+      showConfirmButton: false,
+      timer: 5000,
+      timerProgressBar: true,
+      customClass: { popup: 'rounded-[1.5rem] shadow-xl border border-amber-100 bg-amber-50' }
+    });
+  });
+</script>
+<?php endif; ?>
+
 <div class="space-y-8">
 
   <!-- ── HEADER ── -->
-  <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden relative p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+  <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden relative p-8 flex flex-col md:flex-row items-center justify-between gap-6">
     <div class="absolute right-0 top-0 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none"></div>
     <div class="relative z-10">
       <h2 class="text-3xl font-black text-slate-800">Inventario <span class="text-emerald-600">Materia Prima</span></h2>
@@ -109,7 +135,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
     <!-- Flujo Ingreso vs Egreso -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 p-8 lg:col-span-2">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 p-8 lg:col-span-2">
       <h3 class="text-lg font-bold text-slate-800 mb-1 flex items-center gap-2">
         <i class="fas fa-chart-bar text-sky-500"></i> Flujo de Materia Prima — Ingresos vs. Consumo en Producción
       </h3>
@@ -120,7 +146,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Distribución por tipo de envase -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 p-8">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 p-8">
       <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
         <i class="fas fa-chart-pie text-emerald-500"></i> Distribución por Tipo de Envase
       </h3>
@@ -130,7 +156,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Ingresos últimos 7 días -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 p-8">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 p-8">
       <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
         <i class="fas fa-chart-line text-emerald-500"></i> Ingresos al Inventario (últimos 7 días)
       </h3>
@@ -141,7 +167,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
   </div>
 
   <!-- ── TABLA EGRESOS A PRODUCCIÓN ── -->
-  <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+  <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden">
     <div class="p-8 border-b border-slate-100 flex items-center justify-between">
       <div>
         <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2">
@@ -204,7 +230,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
   </div>
 
   <!-- ── TABLA HISTÓRICO INGRESOS ── -->
-  <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+  <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden">
     <div class="p-8 border-b border-slate-100 flex items-center gap-3">
       <i class="fas fa-list-ul text-emerald-500"></i>
       <h3 class="text-lg font-bold text-slate-800">Historial de Ingresos</h3>

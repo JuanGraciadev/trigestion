@@ -25,7 +25,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <div class="space-y-8">
     <!-- Header -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden p-10 flex flex-col md:flex-row items-center justify-between gap-6 relative">
         <div class="absolute top-0 right-0 -mr-10 -mt-10 w-48 h-48 bg-sky-500/10 rounded-full blur-3xl"></div>
         <div class="z-10">
             <h2 class="text-3xl font-bold text-slate-800">Estado de mis <span class="text-sky-600">Pedidos</span></h2>
@@ -54,7 +54,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Lista de pedidos -->
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden">
         <div class="p-8 border-b border-slate-100 flex items-center justify-between">
             <div>
                 <h3 class="text-2xl font-bold text-slate-800">Mis Pedidos</h3>
@@ -84,7 +84,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 [$estadoCls, $estadoIco] = $estados[$estado] ?? ['bg-slate-100 text-slate-600','fa-circle'];
                 $fecha = date('d/m/Y H:i', strtotime($v['fecha']));
             ?>
-            <div class="group relative bg-white border border-slate-200 hover:border-sky-200 rounded-3xl overflow-hidden transition-all hover:shadow-xl hover:shadow-sky-50">
+            <div class="group relative bg-white/60 backdrop-blur-md border border-slate-100 hover:border-sky-300 rounded-[2rem] overflow-hidden transition-all hover:shadow-[0_20px_50px_-12px_rgba(14,165,233,0.15)] hover:-translate-y-1">
                 <!-- Color accent bar -->
                 <div class="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-3xl
                     <?= $estado === 'Entregado' ? 'bg-emerald-400' : ($estado === 'Cancelado' ? 'bg-red-400' : ($estado === 'En Proceso' ? 'bg-blue-400' : 'bg-amber-400')) ?>"></div>

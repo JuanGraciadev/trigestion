@@ -12,10 +12,19 @@ unset($_SESSION['alert']);
     <title>MOOVA! - Iniciar Sesión</title>
     <link rel="shortcut icon" type="image/png" href="../../img/trigestion.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../CSS/app.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .water-gradient { background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); }
+        .glass-input { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); }
+        .animate-fade { animation: fadeIn 0.6s ease-out; }
+        .animate-slide { animation: slideUp 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 
 <body class="bg-slate-50 min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -51,7 +60,7 @@ unset($_SESSION['alert']);
 
                 <div class="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center gap-4">
                     <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                        <i class="fas fa-shield-check text-xl"></i>
+                        <i class="fas fa-certificate text-xl"></i>
                     </div>
                     <div>
                         <div class="text-[11px] font-bold text-sky-100 uppercase tracking-widest mb-1">Certificación</div>
@@ -83,8 +92,8 @@ unset($_SESSION['alert']);
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Correo Electrónico</label>
                         <div class="relative group">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors">
-                                <i class="fas fa-envelope"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors z-10">
+                                <i class="fas fa-envelope text-lg"></i>
                             </span>
                             <input
                                 type="email"
@@ -102,8 +111,8 @@ unset($_SESSION['alert']);
                             <a href="#" class="text-[12px] font-bold text-sky-600 hover:text-sky-700 transition-colors">¿Olvidaste tu clave?</a>
                         </div>
                         <div class="relative group">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors">
-                                <i class="fas fa-lock"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors z-10">
+                                <i class="fas fa-lock text-lg"></i>
                             </span>
                             <input
                                 type="password"

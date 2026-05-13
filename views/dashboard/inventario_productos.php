@@ -24,249 +24,282 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 
 
-<div class="space-y-8">
+<div class="space-y-10 animate-fade-in-up outfit-font pb-12">
 
-  <!-- ── HEADER ── -->
-  <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden relative">
-    <div class="absolute right-0 top-0 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl -mr-24 -mt-24"></div>
-    <div class="p-8 relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <!-- ── HEADER ── -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
       <div>
-        <h2 class="text-3xl font-bold text-slate-800">Inventario de <span class="text-emerald-600">Productos</span></h2>
-        <p class="text-slate-500 mt-1">Stock actualizado automáticamente al finalizar cada producción.</p>
+        <div class="flex items-center gap-3 mb-2">
+            <div class="p-3 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-2xl text-white shadow-lg shadow-emerald-200">
+                <i class="fas fa-boxes-stacked text-2xl"></i>
+            </div>
+            <h2 class="text-4xl lg:text-5xl font-black text-slate-800 tracking-tight">Centro de <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-500">Inventario</span></h2>
+        </div>
+        <p class="text-slate-500 font-medium text-lg ml-2">Stock actualizado automáticamente tras cada producción.</p>
       </div>
-      <div class="flex items-center gap-3 text-sm bg-emerald-50 border border-emerald-200 text-emerald-700 font-semibold px-5 py-3 rounded-2xl">
-        <i class="fas fa-circle-check"></i> Se actualiza al finalizar producción
+      <div class="flex items-center gap-3 text-sm bg-white/80 backdrop-blur-md border border-emerald-100 text-emerald-700 font-bold px-6 py-4 rounded-[1.25rem] premium-shadow">
+        <i class="fas fa-satellite-dish animate-pulse"></i> Sincronizado en tiempo real
       </div>
     </div>
-  </div>
 
-  <?php if (isset($_SESSION['alert'])): ?>
-  <script>
-    document.addEventListener('DOMContentLoaded',function(){
-      Swal.fire({
-        icon:'<?= htmlspecialchars($_SESSION['alert']['icon']) ?>',
-        title:'<?= htmlspecialchars($_SESSION['alert']['title']) ?>',
-        text:'<?= htmlspecialchars($_SESSION['alert']['text']) ?>',
-        confirmButtonColor:'#10b981',
-        confirmButtonText:'Entendido',
-        customClass:{popup:'rounded-[2rem]'}
+    <!-- Alertas -->
+    <?php if (isset($_SESSION['alert'])): ?>
+    <script>
+      document.addEventListener('DOMContentLoaded',function(){
+        Swal.fire({
+          icon:'<?= htmlspecialchars($_SESSION['alert']['icon']) ?>',
+          title:'<?= htmlspecialchars($_SESSION['alert']['title']) ?>',
+          text:'<?= htmlspecialchars($_SESSION['alert']['text']) ?>',
+          confirmButtonColor:'#10b981',
+          confirmButtonText:'Entendido',
+          customClass:{popup:'rounded-[2rem] outfit-font', confirmButton:'rounded-xl px-6 py-3 font-bold'}
+        });
       });
-    });
-  </script>
-  <?php unset($_SESSION['alert']); endif; ?>
+    </script>
+    <?php unset($_SESSION['alert']); endif; ?>
 
-  <!-- ── STAT CARDS ── -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <?php
-    $cards = [
-      ['icon'=>'fa-boxes-stacked','label'=>'Total Unidades en Stock','value'=> number_format($stats['total_unidades']),'sub'=>'unidades totales','grad'=>'emerald-gradient','text'=>'text-emerald-500'],
-      ['icon'=>'fa-bottle-water','label'=>'Productos Diferentes','value'=> $stats['num_productos'],'sub'=>'en bodega','grad'=>'water-gradient','text'=>'text-sky-500'],
-      ['icon'=>'fa-layer-group','label'=>'Lotes Registrados','value'=> count($registros),'sub'=>'ingresos totales','grad'=>'violet-gradient','text'=>'text-violet-500'],
-      ['icon'=>'fa-chart-line','label'=>'Último Ingreso','value'=> !empty($registros) ? date('d M',strtotime($registros[0]['fecha'])) : '—','sub'=>'fecha reciente','grad'=>'amber-gradient','text'=>'text-amber-500'],
-    ];
-    foreach($cards as $c): ?>
-    <div class="stat-card bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
-      <div class="flex items-start justify-between mb-4">
-        <div class="w-12 h-12 rounded-2xl <?= $c['grad'] ?> flex items-center justify-center text-white text-xl shadow-md">
-          <i class="fas <?= $c['icon'] ?>"></i>
+    <?php 
+    $productos_bajos = [];
+    foreach ($stock as $s) {
+        if ((int)$s['total_unidades'] <= 10) {
+            $productos_bajos[] = $s['producto_nombre'];
+        }
+    }
+    if (!empty($productos_bajos)): 
+    ?>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'warning',
+          title: 'Stock Bajo Detectado',
+          html: 'Los siguientes productos tienen pocas unidades:<br><b><?= htmlspecialchars(implode(", ", $productos_bajos)) ?></b>',
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+          customClass: { popup: 'rounded-[1.5rem] shadow-xl border border-amber-100 bg-amber-50' }
+        });
+      });
+    </script>
+    <?php endif; ?>
+
+    <!-- ── STAT CARDS ── -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <?php
+      $cards = [
+        ['icon'=>'fa-boxes-stacked','label'=>'Total en Stock','value'=> number_format($stats['total_unidades']),'sub'=>'unidades disponibles','grad'=>'emerald-gradient','text'=>'text-emerald-500'],
+        ['icon'=>'fa-bottle-water','label'=>'Productos Diferentes','value'=> $stats['num_productos'],'sub'=>'en catálogo','grad'=>'water-gradient','text'=>'text-sky-500'],
+        ['icon'=>'fa-layer-group','label'=>'Lotes Registrados','value'=> count($registros),'sub'=>'ingresos históricos','grad'=>'violet-gradient','text'=>'text-violet-500'],
+        ['icon'=>'fa-chart-line','label'=>'Último Ingreso','value'=> !empty($registros) ? date('d M',strtotime($registros[0]['fecha'])) : '—','sub'=>'fecha reciente','grad'=>'amber-gradient','text'=>'text-amber-500'],
+      ];
+      foreach($cards as $c): ?>
+      <div class="stat-card glass-card rounded-[2rem] p-7 border border-slate-100 premium-shadow relative group overflow-hidden">
+        <div class="absolute -right-6 -top-6 w-32 h-32 opacity-10 rounded-full blur-[30px] <?= $c['grad'] ?> group-hover:opacity-30 group-hover:scale-125 transition-all duration-700"></div>
+        <div class="flex items-start justify-between mb-4 relative z-10">
+          <div class="w-14 h-14 rounded-[1.25rem] <?= $c['grad'] ?> flex items-center justify-center text-white text-2xl shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+            <i class="fas <?= $c['icon'] ?>"></i>
+          </div>
+          <span class="text-[11px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100"><?= $c['label'] ?></span>
         </div>
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest"><?= $c['label'] ?></span>
-      </div>
-      <p class="text-4xl font-black <?= $c['text'] ?>"><?= $c['value'] ?></p>
-      <p class="text-xs text-slate-400 mt-1 font-semibold uppercase tracking-wide"><?= $c['sub'] ?></p>
-    </div>
-    <?php endforeach; ?>
-  </div>
-
-  <!-- ── CHARTS ── -->
-  <div class="grid lg:grid-cols-2 gap-8">
-    <!-- Producción por día -->
-    <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8 transition-all duration-300 hover:shadow-xl">
-      <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-        <div class="p-2 bg-emerald-100 rounded-lg"><i class="fas fa-calendar-days text-emerald-600"></i></div>
-        Ingresos al Inventario (últimos días)
-      </h3>
-      <div class="relative h-72">
-        <canvas id="chartDias"></canvas>
-      </div>
-    </div>
-    <!-- Top productos -->
-    <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-8 transition-all duration-300 hover:shadow-xl">
-      <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-        <div class="p-2 bg-amber-100 rounded-lg"><i class="fas fa-trophy text-amber-600"></i></div>
-        Top Productos en Stock
-      </h3>
-      <div class="relative h-72 flex justify-center">
-        <canvas id="chartTop"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── STOCK POR PRODUCTO ── -->
-  <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
-    <div class="p-8 border-b border-slate-100">
-      <h3 class="text-2xl font-bold text-slate-800">Resumen de <span class="text-emerald-600">Stock</span> por Producto</h3>
-      <p class="text-slate-500 text-sm mt-1">Consolidado de todas las producciones finalizadas.</p>
-    </div>
-    <div class="p-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-      <?php if (empty($stock)): ?>
-        <div class="col-span-full p-16 text-center">
-          <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300 text-3xl"><i class="fas fa-box-open"></i></div>
-          <p class="text-slate-400 font-semibold">Sin stock registrado aún. Finaliza una producción para ver resultados.</p>
+        <div class="relative z-10">
+            <p class="text-4xl font-black <?= $c['text'] ?> tracking-tight mb-1"><?= $c['value'] ?></p>
+            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider"><?= $c['sub'] ?></p>
         </div>
-      <?php else: foreach($stock as $s): ?>
-        <?php
-          $img = !empty($s['producto_img']) ? '../../img/'.$s['producto_img'] : null;
-          $initials = strtoupper(substr($s['producto_nombre'],0,2));
-        ?>
-        <div class="rounded-3xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:shadow-lg transition-all duration-300 p-6 flex flex-col gap-4">
-          <div class="flex items-center gap-4">
-            <?php if($img): ?>
-              <img src="<?= htmlspecialchars($img) ?>" class="w-14 h-14 rounded-2xl object-cover shadow" alt="">
-            <?php else: ?>
-              <div class="w-14 h-14 rounded-2xl emerald-gradient flex items-center justify-center text-white font-black text-lg shadow"><?= $initials ?></div>
-            <?php endif; ?>
-            <div>
-              <p class="font-bold text-slate-800"><?= htmlspecialchars($s['producto_nombre']) ?></p>
-              <p class="text-xs text-slate-400 font-semibold uppercase"><?= htmlspecialchars($s['categoria_nombre'] ?? 'Sin categoría') ?></p>
+      </div>
+      <?php endforeach; ?>
+    </div>
+
+    <!-- ── CHARTS ── -->
+    <div class="grid lg:grid-cols-2 gap-8">
+      <!-- Producción por día -->
+      <div class="glass-card rounded-[2.5rem] border border-slate-100 premium-shadow p-8 transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(16,185,129,0.15)] group relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-[40px] -mr-20 -mt-20 group-hover:bg-emerald-500/15 transition-colors duration-700 pointer-events-none"></div>
+        <h3 class="text-2xl font-black text-slate-800 mb-8 flex items-center gap-3 relative z-10">
+          <div class="w-12 h-12 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm"><i class="fas fa-calendar-days text-xl"></i></div>
+          Ingresos Recientes
+        </h3>
+        <div class="relative h-[300px] w-full">
+          <canvas id="chartDias"></canvas>
+        </div>
+      </div>
+      <!-- Top productos -->
+      <div class="glass-card rounded-[2.5rem] border border-slate-100 premium-shadow p-8 transition-all duration-500 hover:shadow-[0_20px_50px_-12px_rgba(245,158,11,0.15)] group relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-[40px] -mr-20 -mt-20 group-hover:bg-amber-500/15 transition-colors duration-700 pointer-events-none"></div>
+        <h3 class="text-2xl font-black text-slate-800 mb-8 flex items-center gap-3 relative z-10">
+          <div class="w-12 h-12 bg-amber-50 border border-amber-100 rounded-2xl flex items-center justify-center text-amber-600 shadow-sm"><i class="fas fa-trophy text-xl"></i></div>
+          Distribución de Stock
+        </h3>
+        <div class="relative h-[300px] flex justify-center w-full">
+          <canvas id="chartTop"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STOCK POR PRODUCTO ── -->
+    <div class="glass-card rounded-[2.5rem] border border-slate-100 premium-shadow overflow-hidden">
+      <div class="p-8 border-b border-slate-100/50 bg-gradient-to-r from-slate-50/50 to-white">
+        <h3 class="text-2xl font-black text-slate-800 tracking-tight">Resumen por <span class="text-emerald-600">Producto</span></h3>
+        <p class="text-slate-500 text-sm mt-2 font-medium">Consolidado general de tu bodega en tiempo real.</p>
+      </div>
+      <div class="p-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 bg-slate-50/30">
+        <?php if (empty($stock)): ?>
+          <div class="col-span-full p-20 text-center">
+            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300 text-4xl premium-shadow border border-slate-100"><i class="fas fa-box-open"></i></div>
+            <p class="text-slate-500 font-bold text-lg">Sin stock registrado aún. Finaliza una producción para ver resultados.</p>
+          </div>
+        <?php else: foreach($stock as $s): ?>
+          <?php
+            $img = !empty($s['producto_img']) ? '../../img/'.$s['producto_img'] : null;
+            $initials = strtoupper(substr($s['producto_nombre'],0,2));
+          ?>
+          <div class="glass-card rounded-[2rem] border border-slate-100 premium-shadow p-6 flex flex-col gap-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 relative overflow-hidden group bg-white">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-50/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+            
+            <div class="flex items-center gap-5 relative z-10">
+              <?php if($img): ?>
+                <img src="<?= htmlspecialchars($img) ?>" class="w-16 h-16 rounded-[1.25rem] object-cover shadow-md border border-slate-100" alt="">
+              <?php else: ?>
+                <div class="w-16 h-16 rounded-[1.25rem] emerald-gradient flex items-center justify-center text-white font-black text-2xl shadow-md"><?= $initials ?></div>
+              <?php endif; ?>
+              <div>
+                <p class="font-black text-lg text-slate-800 leading-tight mb-1 group-hover:text-emerald-600 transition-colors"><?= htmlspecialchars($s['producto_nombre']) ?></p>
+                <p class="text-[11px] text-slate-400 font-bold uppercase tracking-widest bg-slate-50 px-2.5 py-1 rounded-md inline-block border border-slate-100"><?= htmlspecialchars($s['categoria_nombre'] ?? 'Sin categoría') ?></p>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-3 text-center relative z-10">
+              <div class="bg-violet-50/80 rounded-2xl p-2 border border-violet-100/50 hover:bg-violet-100 transition-colors">
+                <p class="text-xl font-black text-violet-600"><?= number_format($s['total_ingresado']) ?></p>
+                <p class="text-[9px] font-bold text-violet-500 uppercase mt-1">Producido</p>
+              </div>
+              <div class="bg-amber-50/80 rounded-2xl p-2 border border-amber-100/50 hover:bg-amber-100 transition-colors">
+                <p class="text-xl font-black text-amber-600"><?= number_format($s['total_vendido']) ?></p>
+                <p class="text-[9px] font-bold text-amber-500 uppercase mt-1">Vendido</p>
+              </div>
+              <div class="bg-emerald-50 rounded-2xl p-2 shadow-inner border border-emerald-200/60 transform scale-105">
+                <p class="text-xl font-black text-emerald-600"><?= number_format($s['total_unidades']) ?></p>
+                <p class="text-[9px] font-bold text-emerald-600 uppercase mt-1">Stock</p>
+              </div>
+              <div class="bg-sky-50/80 rounded-2xl p-2 border border-sky-100/50 hover:bg-sky-100 transition-colors">
+                <p class="text-xl font-black text-sky-600"><?= $s['num_lotes'] ?></p>
+                <p class="text-[9px] font-bold text-sky-500 uppercase mt-1">Lotes</p>
+              </div>
+            </div>
+            <div class="pt-2 mt-auto border-t border-slate-50 flex justify-between items-center relative z-10">
+               <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Último Ingreso</span>
+               <span class="text-xs font-bold text-slate-500"><?= date('d/m/Y H:i', strtotime($s['ultima_entrada'])) ?></span>
             </div>
           </div>
-          <div class="grid grid-cols-4 gap-2 text-center">
-            <div class="bg-violet-50 rounded-xl p-2" title="Producido">
-              <p class="text-lg font-black text-violet-600"><?= number_format($s['total_ingresado']) ?></p>
-              <p class="text-[9px] font-bold text-violet-500 uppercase">Producido</p>
-            </div>
-            <div class="bg-amber-50 rounded-xl p-2" title="Vendido">
-              <p class="text-lg font-black text-amber-600"><?= number_format($s['total_vendido']) ?></p>
-              <p class="text-[9px] font-bold text-amber-500 uppercase">Vendido</p>
-            </div>
-            <div class="bg-emerald-50 rounded-xl p-2 shadow-inner border border-emerald-100" title="Stock Actual">
-              <p class="text-lg font-black text-emerald-600"><?= number_format($s['total_unidades']) ?></p>
-              <p class="text-[9px] font-bold text-emerald-500 uppercase">Stock</p>
-            </div>
-            <div class="bg-sky-50 rounded-xl p-2" title="Lotes">
-              <p class="text-lg font-black text-sky-600"><?= $s['num_lotes'] ?></p>
-              <p class="text-[9px] font-bold text-sky-500 uppercase">Lotes</p>
-            </div>
+        <?php endforeach; endif; ?>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+      <!-- ── TABLA DETALLADA INGRESO ── -->
+      <div class="glass-card rounded-[2.5rem] border border-slate-100 premium-shadow overflow-hidden flex flex-col">
+        <div class="p-8 border-b border-slate-100/50 bg-gradient-to-r from-violet-50/50 to-white flex items-center justify-between">
+          <div>
+            <h3 class="text-2xl font-black text-slate-800 tracking-tight">Historial de <span class="text-violet-600">Ingresos</span></h3>
+            <p class="text-slate-500 text-sm mt-1 font-medium">Producciones finalizadas.</p>
           </div>
-          <p class="text-xs text-slate-400 text-right">Último ingreso: <?= date('d/m/Y H:i', strtotime($s['ultima_entrada'])) ?></p>
+          <span class="px-4 py-2 bg-violet-100 text-violet-700 text-sm font-bold rounded-xl border border-violet-200"><?= count($registros) ?> registros</span>
         </div>
-      <?php endforeach; endif; ?>
-    </div>
-  </div>
-
-  <!-- ── TABLA DETALLADA ── -->
-  <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden">
-    <div class="p-8 border-b border-slate-100 flex items-center justify-between">
-      <div>
-        <h3 class="text-2xl font-bold text-slate-800">Historial de <span class="text-violet-600">Ingresos</span></h3>
-        <p class="text-slate-500 text-sm mt-1">Cada fila representa una producción finalizada.</p>
+        <div class="overflow-x-auto overflow-y-auto max-h-[500px] custom-scrollbar flex-1 p-2">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-black tracking-widest sticky top-0 z-10 backdrop-blur-md">
+              <tr>
+                <th class="px-6 py-4 rounded-tl-xl rounded-bl-xl">Producto</th>
+                <th class="px-6 py-4">Lote</th>
+                <th class="px-6 py-4">Cantidad</th>
+                <th class="px-6 py-4">Bodega</th>
+                <th class="px-6 py-4 rounded-tr-xl rounded-br-xl text-center">Act</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+              <?php if (empty($registros)): ?>
+                <tr><td colspan="5" class="p-16 text-center text-slate-400 font-bold">No hay ingresos aún.</td></tr>
+              <?php else: foreach($registros as $r): ?>
+              <tr class="hover:bg-violet-50/30 transition-colors group">
+                <td class="px-6 py-4">
+                  <div class="font-bold text-slate-800 text-sm"><?= htmlspecialchars($r['producto_nombre'] ?? '—') ?></div>
+                  <div class="text-[10px] text-slate-400 uppercase font-bold"><?= date('d/m/Y', strtotime($r['fecha'])) ?></div>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-black border border-slate-200"><?= htmlspecialchars($r['lote_produccion'] ?? '—') ?></span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="text-lg font-black text-emerald-600">+<?= number_format($r['cantidad']) ?></span>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="flex items-center gap-1.5 text-slate-600 font-bold text-xs bg-slate-50 px-2 py-1 rounded-md border border-slate-100">
+                    <i class="fas fa-warehouse text-slate-400"></i>
+                    <?= htmlspecialchars($r['bodega']) ?>
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-center">
+                  <button onclick="openEditBodega(<?= $r['id_inventario'] ?>, '<?= htmlspecialchars($r['bodega']) ?>')"
+                    class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-violet-600 hover:border-violet-300 hover:bg-violet-50 hover:shadow-md transition-all shadow-sm" title="Editar bodega">
+                    <i class="fas fa-pen text-xs"></i>
+                  </button>
+                </td>
+              </tr>
+              <?php endforeach; endif; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <span class="px-4 py-2 bg-violet-100 text-violet-700 text-sm font-bold rounded-full"><?= count($registros) ?> registros</span>
-    </div>
-    <div class="overflow-x-auto overflow-y-auto max-h-[500px] custom-scrollbar relative">
-      <table class="w-full text-left">
-        <thead class="bg-slate-50 text-slate-500 uppercase text-xs font-bold tracking-widest sticky top-0 z-10 shadow-sm">
-          <tr>
-            <th class="px-8 py-5">#</th>
-            <th class="px-8 py-5">Producto</th>
-            <th class="px-8 py-5">Lote Producción</th>
-            <th class="px-8 py-5">Cantidad</th>
-            <th class="px-8 py-5">Bodega</th>
-            <th class="px-8 py-5">Responsable</th>
-            <th class="px-8 py-5">Fecha Ingreso</th>
-            <th class="px-8 py-5 text-center">Acción</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-100">
-          <?php if (empty($registros)): ?>
-            <tr><td colspan="8" class="p-16 text-center text-slate-400 font-medium">No hay registros aún.</td></tr>
-          <?php else: foreach($registros as $r): ?>
-          <tr class="hover:bg-slate-50/50 transition-colors group">
-            <td class="px-8 py-5 text-slate-400 font-mono text-sm">#<?= $r['id_inventario'] ?></td>
-            <td class="px-8 py-5">
-              <div class="font-bold text-slate-800"><?= htmlspecialchars($r['producto_nombre'] ?? '—') ?></div>
-              <div class="text-xs text-slate-400"><?= htmlspecialchars($r['categoria_nombre'] ?? '') ?></div>
-            </td>
-            <td class="px-8 py-5">
-              <span class="px-3 py-1 bg-sky-100 text-sky-700 rounded-lg text-xs font-bold"><?= htmlspecialchars($r['lote_produccion'] ?? '—') ?></span>
-            </td>
-            <td class="px-8 py-5">
-              <span class="text-2xl font-black text-emerald-600"><?= number_format($r['cantidad']) ?></span>
-              <span class="text-xs text-slate-400 ml-1">unds.</span>
-            </td>
-            <td class="px-8 py-5">
-              <span class="flex items-center gap-1 text-slate-700 font-semibold text-sm">
-                <i class="fas fa-warehouse text-slate-400 text-xs"></i>
-                <?= htmlspecialchars($r['bodega']) ?>
-              </span>
-            </td>
-            <td class="px-8 py-5 text-slate-600"><?= htmlspecialchars($r['usuario_nombre'] ?? '—') ?></td>
-            <td class="px-8 py-5 text-slate-500 text-sm"><?= date('d/m/Y H:i', strtotime($r['fecha'])) ?></td>
-            <td class="px-8 py-5 text-center">
-              <button onclick="openEditBodega(<?= $r['id_inventario'] ?>, '<?= htmlspecialchars($r['bodega']) ?>')"
-                class="w-9 h-9 rounded-xl border border-slate-200 text-slate-400 hover:text-violet-600 hover:border-violet-400 hover:bg-violet-50 transition-all" title="Editar bodega">
-                <i class="fas fa-pen-to-square text-sm"></i>
-              </button>
-            </td>
-          </tr>
-          <?php endforeach; endif; ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
 
-  <!-- ── TABLA DETALLADA DE SALIDAS ── -->
-  <div class="bg-white rounded-[2rem] border border-slate-200 shadow-sm overflow-hidden mt-8">
-    <div class="p-8 border-b border-slate-100 flex items-center justify-between">
-      <div>
-        <h3 class="text-2xl font-bold text-slate-800">Historial de <span class="text-amber-600">Salidas</span></h3>
-        <p class="text-slate-500 text-sm mt-1">Registros de los productos que han salido por ventas.</p>
+      <!-- ── TABLA DETALLADA DE SALIDAS ── -->
+      <div class="glass-card rounded-[2.5rem] border border-slate-100 premium-shadow overflow-hidden flex flex-col">
+        <div class="p-8 border-b border-slate-100/50 bg-gradient-to-r from-amber-50/50 to-white flex items-center justify-between">
+          <div>
+            <h3 class="text-2xl font-black text-slate-800 tracking-tight">Historial de <span class="text-amber-600">Salidas</span></h3>
+            <p class="text-slate-500 text-sm mt-1 font-medium">Despachos por ventas.</p>
+          </div>
+          <span class="px-4 py-2 bg-amber-100 text-amber-700 text-sm font-bold rounded-xl border border-amber-200"><?= count($salidas) ?> ventas</span>
+        </div>
+        <div class="overflow-x-auto overflow-y-auto max-h-[500px] custom-scrollbar flex-1 p-2">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-black tracking-widest sticky top-0 z-10 backdrop-blur-md">
+              <tr>
+                <th class="px-6 py-4 rounded-tl-xl rounded-bl-xl">Producto</th>
+                <th class="px-6 py-4">Cliente</th>
+                <th class="px-6 py-4">Cantidad</th>
+                <th class="px-6 py-4 rounded-tr-xl rounded-br-xl">Estado</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+              <?php if (empty($salidas)): ?>
+                <tr><td colspan="4" class="p-16 text-center text-slate-400 font-bold">No hay salidas registradas aún.</td></tr>
+              <?php else: foreach($salidas as $s): ?>
+              <tr class="hover:bg-amber-50/30 transition-colors group">
+                <td class="px-6 py-4">
+                  <div class="font-bold text-slate-800 text-sm"><?= htmlspecialchars($s['producto_nombre'] ?? '—') ?></div>
+                  <div class="text-[10px] text-slate-400 uppercase font-bold"><?= date('d/m/Y', strtotime($s['fecha'])) ?></div>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="font-bold text-slate-600 text-xs"><?= htmlspecialchars($s['cliente_nombre'] ?? '—') ?></div>
+                    <div class="text-[10px] text-slate-400">Venta #<?= $s['id_venta'] ?></div>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="text-lg font-black text-amber-500">-<?= number_format($s['cantidad']) ?></span>
+                </td>
+                <td class="px-6 py-4">
+                  <?php
+                    $est = $s['estado'];
+                    $cls = $est === 'Entregado' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : ($est === 'En Proceso' ? 'bg-blue-50 text-blue-600 border-blue-200' : ($est === 'Pendiente' ? 'bg-amber-50 text-amber-600 border-amber-200' : 'bg-slate-50 text-slate-600 border-slate-200'));
+                  ?>
+                  <span class="px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider border <?= $cls ?> shadow-sm"><?= htmlspecialchars($est) ?></span>
+                </td>
+              </tr>
+              <?php endforeach; endif; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <span class="px-4 py-2 bg-amber-100 text-amber-700 text-sm font-bold rounded-full"><?= count($salidas) ?> ventas</span>
-    </div>
-    <div class="overflow-x-auto overflow-y-auto max-h-[500px] custom-scrollbar relative">
-      <table class="w-full text-left">
-        <thead class="bg-slate-50 text-slate-500 uppercase text-xs font-bold tracking-widest sticky top-0 z-10 shadow-sm">
-          <tr>
-            <th class="px-8 py-5">Venta #</th>
-            <th class="px-8 py-5">Fecha</th>
-            <th class="px-8 py-5">Cliente</th>
-            <th class="px-8 py-5">Producto</th>
-            <th class="px-8 py-5">Cantidad Saliente</th>
-            <th class="px-8 py-5">Estado Venta</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-100">
-          <?php if (empty($salidas)): ?>
-            <tr><td colspan="6" class="p-16 text-center text-slate-400 font-medium">No hay salidas registradas aún.</td></tr>
-          <?php else: foreach($salidas as $s): ?>
-          <tr class="hover:bg-slate-50/50 transition-colors group">
-            <td class="px-8 py-5 text-slate-400 font-mono text-sm">#<?= $s['id_venta'] ?></td>
-            <td class="px-8 py-5 text-slate-500 text-sm"><?= date('d/m/Y H:i', strtotime($s['fecha'])) ?></td>
-            <td class="px-8 py-5 font-semibold text-slate-700"><?= htmlspecialchars($s['cliente_nombre'] ?? '—') ?></td>
-            <td class="px-8 py-5">
-              <div class="font-bold text-slate-800"><?= htmlspecialchars($s['producto_nombre'] ?? '—') ?></div>
-              <div class="text-xs text-slate-400"><?= htmlspecialchars($s['categoria_nombre'] ?? '') ?></div>
-            </td>
-            <td class="px-8 py-5">
-              <span class="text-xl font-black text-amber-600">-<?= number_format($s['cantidad']) ?></span>
-              <span class="text-xs text-slate-400 ml-1">unds.</span>
-            </td>
-            <td class="px-8 py-5">
-              <?php
-                $est = $s['estado'];
-                $cls = $est === 'Entregado' ? 'bg-emerald-100 text-emerald-700' : ($est === 'En Proceso' ? 'bg-blue-100 text-blue-700' : ($est === 'Pendiente' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-700'));
-              ?>
-              <span class="px-3 py-1 rounded-lg text-xs font-bold <?= $cls ?>"><?= htmlspecialchars($est) ?></span>
-            </td>
-          </tr>
-          <?php endforeach; endif; ?>
-        </tbody>
-      </table>
     </div>
   </div>
-</div>
 
 <!-- Modal editar bodega -->
 <div id="modalBodega" class="fixed inset-0 bg-slate-900/60 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">

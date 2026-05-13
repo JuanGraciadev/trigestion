@@ -28,100 +28,79 @@ $nombreCompleto = $usuario['nombres'];
         $dashboard_url = 'admin.php';
         if ($id_rol == '2') $dashboard_url = 'trabajador.php';
         if ($id_rol == '3') $dashboard_url = 'cliente.php';
+
+        $currentPage = basename($_SERVER['PHP_SELF']);
+        
+        $activeClass = 'bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-[0_10px_20px_-10px_rgba(14,165,233,0.5)] font-bold border border-sky-400/50 scale-[1.02] transform transition-all relative overflow-hidden';
+        $inactiveClass = 'text-slate-400 hover:bg-slate-800 hover:text-white border border-transparent transition-all group font-medium';
+        $iconActive = 'text-white drop-shadow-md';
+        
+        $navItem = function($url, $icon, $label, $extraHtml = '', $customIconInactive = 'group-hover:text-sky-400') use ($currentPage, $activeClass, $inactiveClass, $iconActive) {
+            $isActive = ($currentPage === $url);
+            $cls = $isActive ? $activeClass : $inactiveClass;
+            $iconCls = $isActive ? $iconActive : $customIconInactive;
+            
+            $glow = $isActive ? '<div class="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300"></div>' : '';
+            
+            return '
+            <a href="'.$url.'" class="flex items-center gap-3 px-4 py-3.5 rounded-xl '.$cls.'">
+                '.$glow.'
+                <i class="fas '.$icon.' '.$iconCls.' relative z-10 transition-colors"></i>
+                <span class="relative z-10">'.$label.'</span>
+                '.$extraHtml.'
+            </a>';
+        };
         ?>
-        <a href="<?= $dashboard_url ?>" class="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-sky-600/10 text-sky-400 font-semibold border border-sky-600/20 transition-all">
-            <i class="fas fa-chart-pie"></i>
-            <span>Dashboard</span>
-        </a>
+        
+        <?php if ($id_rol != '1'): ?>
+            <?= $navItem($dashboard_url, 'fa-chart-pie', 'Dashboard') ?>
+        <?php endif; ?>
 
         <?php if ($id_rol == '1'): ?>
-            <a href="admin.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-users group-hover:text-sky-400"></i>
-                <span>Gestión Usuarios</span>
-            </a>
+            <?= $navItem('admin.php', 'fa-users', 'Gestión Usuarios') ?>
             
             <div class="pt-6 px-4 mb-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Operaciones</div>
             
-            <a href="inventario_mp.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-boxes-stacked group-hover:text-sky-400"></i>
-                <span>Inventario MP</span>
-            </a>
-            <a href="lotes.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-box-open group-hover:text-sky-400"></i>
-                <span>Gestión de Lotes</span>
-            </a>
-
-            <a href="categorias.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-tags group-hover:text-sky-400"></i>
-                <span>Categorías</span>
-            </a>
-            <a href="productos.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-tint group-hover:text-sky-400"></i>
-                <span>Productos</span>
-            </a>
-            <a href="inventario_productos.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-cubes group-hover:text-emerald-400"></i>
-                <span>Inventario Productos</span>
-            </a>
-            <a href="ventas.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group relative">
-                <i class="fas fa-cart-shopping group-hover:text-sky-400"></i>
-                <span>Ventas y Pedidos</span>
-                <?php
-                // Mostrar badge de pedidos pendientes
-                try {
-                    require_once __DIR__ . '/../../config/database.php';
-                    require_once __DIR__ . '/../../models/Venta.php';
-                    $__db = (new Database())->conectar();
-                    $__vm = new Venta($__db);
-                    $__pend = $__vm->contarPendientes();
-                    if ($__pend > 0):
-                ?>
-                <span class="ml-auto bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full min-w-[1.2rem] text-center animate-pulse">
-                    <?= $__pend ?>
-                </span>
-                <?php endif; } catch(Exception $e) {} ?>
-            </a>
+            <?= $navItem('inventario_mp.php', 'fa-boxes-stacked', 'Inventario MP') ?>
+            <?= $navItem('lotes.php', 'fa-box-open', 'Gestión de Lotes') ?>
+            <?= $navItem('categorias.php', 'fa-tags', 'Categorías') ?>
+            <?= $navItem('productos.php', 'fa-tint', 'Productos') ?>
+            <?= $navItem('inventario_productos.php', 'fa-cubes', 'Inventario Productos', '', 'group-hover:text-emerald-400') ?>
+            
+            <?php
+            $badgeHtml = '';
+            try {
+                require_once __DIR__ . '/../../config/database.php';
+                require_once __DIR__ . '/../../models/Venta.php';
+                $__db = (new Database())->conectar();
+                $__vm = new Venta($__db);
+                $__pend = $__vm->contarPendientes();
+                if ($__pend > 0) {
+                    $badgeHtml = '<span class="ml-auto bg-red-500 text-white text-xs font-black px-2 py-0.5 rounded-full min-w-[1.2rem] text-center animate-pulse relative z-10">'.$__pend.'</span>';
+                }
+            } catch(Exception $e) {}
+            ?>
+            <?= $navItem('ventas.php', 'fa-cart-shopping', 'Ventas y Pedidos', $badgeHtml) ?>
             
             <div class="pt-6 px-4 mb-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Análisis</div>
             
-            <a href="reportes.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-file-invoice-dollar group-hover:text-sky-400"></i>
-                <span>Reportes Generales</span>
-            </a>
+            <?= $navItem('reportes.php', 'fa-file-invoice-dollar', 'Reportes Generales') ?>
         <?php endif; ?>
 
         <?php if ($id_rol == '2'): ?>
             <div class="pt-6 px-4 mb-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Área de Trabajo</div>
             
-            <a href="produccion.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-industry group-hover:text-sky-400"></i>
-                <span>Producción</span>
-            </a>
-            <a href="inventario_mp.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-boxes-stacked group-hover:text-sky-400"></i>
-                <span>Inventario MP</span>
-            </a>
-            <a href="lotes.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-box-open group-hover:text-sky-400"></i>
-                <span>Gestión de Lotes</span>
-            </a>
-            <a href="inventario_productos.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-cubes group-hover:text-emerald-400"></i>
-                <span>Inventario Productos</span>
-            </a>
+            <?= $navItem('produccion.php', 'fa-industry', 'Producción') ?>
+            <?= $navItem('inventario_mp.php', 'fa-boxes-stacked', 'Inventario MP') ?>
+            <?= $navItem('lotes.php', 'fa-box-open', 'Gestión de Lotes') ?>
+            <?= $navItem('inventario_productos.php', 'fa-cubes', 'Inventario Productos', '', 'group-hover:text-emerald-400') ?>
         <?php endif; ?>
 
         <?php if ($id_rol == '3'): ?>
             <div class="pt-6 px-4 mb-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Mi Tienda</div>
             
-            <a href="cliente.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-store group-hover:text-sky-400"></i>
-                <span>Catálogo de Productos</span>
-            </a>
-            <a href="cliente_compras.php" class="flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-slate-800 hover:text-white transition-all group">
-                <i class="fas fa-shopping-bag group-hover:text-sky-400"></i>
-                <span>Mis Compras</span>
-            </a>
+            <?= $navItem('cliente.php', 'fa-store', 'Catálogo de Productos') ?>
+            <?= $navItem('cliente_compras.php', 'fa-shopping-bag', 'Mis Compras') ?>
         <?php endif; ?>
 
             <!-- Bottom Actions -->

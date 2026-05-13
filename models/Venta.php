@@ -236,7 +236,7 @@ class Venta {
         }
         try {
             $total = $this->conn
-                ->query("SELECT COALESCE(SUM(total),0) FROM venta WHERE estado != 'Cancelado'")
+                ->query("SELECT COALESCE(SUM(total),0) FROM venta WHERE estado NOT IN ('Pendiente', 'Cancelado')")
                 ->fetchColumn();
             $stats['total_ingresos'] = $total;
         } catch (PDOException $ex) {

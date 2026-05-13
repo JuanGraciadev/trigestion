@@ -20,7 +20,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 ?>
 
 <div class="space-y-8">
-    <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden relative p-10 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden relative p-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="absolute top-0 right-0 -mr-10 -mt-10 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl"></div>
         <div>
             <h2 class="text-3xl font-black text-slate-800 mb-2">Bienvenido a tu <span class="text-sky-600">Área de Trabajo</span></h2>
@@ -33,7 +33,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Producción -->
-        <a href="produccion.php" class="bg-white rounded-[2rem] p-8 border border-slate-200 hover:border-sky-300 hover:shadow-xl hover:shadow-sky-100 transition-all group flex flex-col items-center text-center">
+        <a href="produccion.php" class="glass-card rounded-[2.5rem] p-8 border border-slate-100 premium-shadow hover:border-sky-300 hover:shadow-2xl hover:shadow-sky-100 transition-all group flex flex-col items-center text-center hover:-translate-y-2">
             <div class="w-16 h-16 rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-sky-500 group-hover:text-white flex items-center justify-center text-2xl font-bold mb-4 transition-all">
                 <i class="fas fa-industry"></i>
             </div>
@@ -42,7 +42,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </a>
 
         <!-- Inventario Materia Prima -->
-        <a href="inventario_mp.php" class="bg-white rounded-[2rem] p-8 border border-slate-200 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-100 transition-all group flex flex-col items-center text-center">
+        <a href="inventario_mp.php" class="glass-card rounded-[2.5rem] p-8 border border-slate-100 premium-shadow hover:border-emerald-300 hover:shadow-2xl hover:shadow-emerald-100 transition-all group flex flex-col items-center text-center hover:-translate-y-2">
             <div class="w-16 h-16 rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-emerald-500 group-hover:text-white flex items-center justify-center text-2xl font-bold mb-4 transition-all">
                 <i class="fas fa-boxes-stacked"></i>
             </div>
@@ -51,7 +51,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </a>
 
         <!-- Gestión de Lotes -->
-        <a href="lotes.php" class="bg-white rounded-[2rem] p-8 border border-slate-200 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-100 transition-all group flex flex-col items-center text-center">
+        <a href="lotes.php" class="glass-card rounded-[2.5rem] p-8 border border-slate-100 premium-shadow hover:border-amber-300 hover:shadow-2xl hover:shadow-amber-100 transition-all group flex flex-col items-center text-center hover:-translate-y-2">
             <div class="w-16 h-16 rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center text-2xl font-bold mb-4 transition-all">
                 <i class="fas fa-box-open"></i>
             </div>
@@ -60,7 +60,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </a>
         
         <!-- Inventario Productos -->
-        <a href="inventario_productos.php" class="bg-white rounded-[2rem] p-8 border border-slate-200 hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-100 transition-all group flex flex-col items-center text-center">
+        <a href="inventario_productos.php" class="glass-card rounded-[2.5rem] p-8 border border-slate-100 premium-shadow hover:border-indigo-300 hover:shadow-2xl hover:shadow-indigo-100 transition-all group flex flex-col items-center text-center hover:-translate-y-2">
             <div class="w-16 h-16 rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-indigo-500 group-hover:text-white flex items-center justify-center text-2xl font-bold mb-4 transition-all">
                 <i class="fas fa-cubes"></i>
             </div>

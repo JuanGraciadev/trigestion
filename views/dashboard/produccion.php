@@ -30,7 +30,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <div class="space-y-10">
     <!-- Main Header Card -->
-    <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden">
         <div class="p-8 md:p-10 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-slate-50 to-white relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
             <div class="relative z-10">
@@ -67,7 +67,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         <div class="p-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php foreach ($producciones as $prod): ?>
-                <div class="bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-400 group relative">
+                <div class="glass-card rounded-[2.5rem] border border-slate-100 overflow-hidden premium-shadow hover:shadow-2xl hover:-translate-y-1 transition-all duration-400 group relative">
                     <div class="p-7 relative bg-gradient-to-b from-slate-50/50 to-white">
                         <div class="absolute top-5 right-5">
                             <?php if (($prod['estado'] ?? '') === 'Finalizada'): ?>
@@ -135,7 +135,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Modal Iniciar Produccion -->
 <div id="modalIniciar" class="fixed inset-0 bg-slate-900/60 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
-    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-2xl overflow-hidden animate-fade-in my-8">
+    <div class="glass-card rounded-[2.5rem] premium-shadow w-full max-w-2xl overflow-hidden animate-fade-in my-8">
         <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <div>
                 <h3 class="text-2xl font-bold text-slate-800">Iniciar Producción</h3>
@@ -149,40 +149,57 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             <div class="grid grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Código de Lote</label>
-                    <input type="text" name="lote_produccion" required placeholder="Ej. LOTE-2023X" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-barcode"></i></span>
+                        <input type="text" name="lote_produccion" required placeholder="Ej. LOTE-2023X" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700">
+                    </div>
                 </div>
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Cantidad a Producir</label>
-                    <input type="number" name="cantidad" required min="1" placeholder="Ej. 100" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-layer-group"></i></span>
+                        <input type="number" name="cantidad" required min="1" placeholder="Ej. 100" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700">
+                    </div>
                 </div>
             </div>
             
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase ml-1">Producto Terminado</label>
-                <select name="id_producto" required class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700 appearance-none">
-                    <option value="">Seleccione el producto...</option>
-                    <?php foreach($productos as $p): ?>
-                        <option value="<?= $p['id_producto'] ?>"><?= htmlspecialchars($p['nombre']) ?> - $<?= number_format($p['precio'], 2) ?></option>
-                    <?php endforeach; ?>
-                </select>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 z-10"><i class="fas fa-bottle-water"></i></span>
+                    <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none z-10"></i>
+                    <select name="id_producto" required class="w-full pl-12 pr-10 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700 appearance-none">
+                        <option value="">Seleccione el producto...</option>
+                        <?php foreach($productos as $p): ?>
+                            <option value="<?= $p['id_producto'] ?>"><?= htmlspecialchars($p['nombre']) ?> - $<?= number_format($p['precio'], 2) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
             
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase ml-1">Materia Prima a Utilizar (Opcional)</label>
-                <select name="id_inventario_materia" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700 appearance-none">
-                    <option value="">No deducir / Lote Genérico...</option>
-                    <?php foreach($materiaPrima as $mp): ?>
-                        <option value="<?= $mp['id_inventario_materia'] ?>">
-                            MP-<?= $mp['id_inventario_materia'] ?>: <?= htmlspecialchars($mp['tipo_envase']) ?> <?= htmlspecialchars($mp['capacidad']) ?> (Lote: <?= htmlspecialchars($mp['codigo_lote'] ?? 'N/A') ?>) - Qty: <?= $mp['ingreso'] ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 z-10"><i class="fas fa-boxes-stacked"></i></span>
+                    <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none z-10"></i>
+                    <select name="id_inventario_materia" class="w-full pl-12 pr-10 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700 appearance-none">
+                        <option value="">No deducir / Lote Genérico...</option>
+                        <?php foreach($materiaPrima as $mp): ?>
+                            <option value="<?= $mp['id_inventario_materia'] ?>">
+                                MP-<?= $mp['id_inventario_materia'] ?>: <?= htmlspecialchars($mp['tipo_envase']) ?> <?= htmlspecialchars($mp['capacidad']) ?> (Lote: <?= htmlspecialchars($mp['codigo_lote'] ?? 'N/A') ?>) - Qty: <?= $mp['ingreso'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <p class="text-xs text-slate-400 italic mt-1 ml-2">Asocia un registro de entrada de materia prima para la trazabilidad.</p>
             </div>
 
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase ml-1">Descripción o Notas</label>
-                <textarea name="descripcion" rows="3" placeholder="Instrucciones especiales o notas del proceso..." class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700 resize-none"></textarea>
+                <div class="relative">
+                    <span class="absolute top-4 left-0 flex items-start pl-5 text-slate-400"><i class="fas fa-comment-alt"></i></span>
+                    <textarea name="descripcion" rows="3" placeholder="Instrucciones especiales o notas del proceso..." class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-slate-700 resize-none"></textarea>
+                </div>
             </div>
             
             <div class="flex justify-end gap-4 pt-4 border-t border-slate-100">

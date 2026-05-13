@@ -20,8 +20,8 @@ $stats = [
 ];
 
 try {
-    // Ventas Totales y Ingresos (solo ventas completadas o enviadas, asumimos estado != 'Pendiente')
-    $stmtVentas = $db->query("SELECT COUNT(*) as total, SUM(total) as ingresos FROM venta WHERE estado != 'Pendiente'");
+    // Ventas Totales y Ingresos (excluimos Pendiente y Cancelado)
+    $stmtVentas = $db->query("SELECT COUNT(*) as total, SUM(total) as ingresos FROM venta WHERE estado NOT IN ('Pendiente', 'Cancelado')");
     $resVentas = $stmtVentas->fetch(PDO::FETCH_ASSOC);
     $stats['ventas_totales'] = $resVentas['total'] ?? 0;
     $stats['ingresos_totales'] = $resVentas['ingresos'] ?? 0;
@@ -46,7 +46,7 @@ try {
         FROM detalle_venta dv 
         JOIN producto p ON dv.id_producto = p.id_producto 
         JOIN venta v ON dv.id_venta = v.id_venta 
-        WHERE v.estado != 'Pendiente'
+        WHERE v.estado NOT IN ('Pendiente', 'Cancelado')
         GROUP BY p.id_producto 
         ORDER BY total_vendido DESC 
         LIMIT 5
@@ -63,10 +63,73 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Chart.js para visualizaciones premium -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- PDF generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<div class="space-y-10">
+<style>
+/* ── Estilos de impresión / PDF ─────────────────────────────────────── */
+@media print {
+    /* Ocultar todo lo que no es el reporte */
+    body > *:not(#reporteContenido) { display: none !important; }
+    #reporteContenido { display: block !important; }
+
+    /* Sidebar, header de navegación, botones */
+    nav, aside, .sidebar, [class*="sidebar"],
+    button, .btn-print, .no-print { display: none !important; }
+
+    body { background: white !important; font-family: 'Outfit', sans-serif; }
+
+    .glass-card, .glass-panel {
+        background: white !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+
+    canvas { max-width: 100% !important; }
+
+    /* Evitar cortes de página dentro de cards */
+    .kpi-card, .chart-card { break-inside: avoid; page-break-inside: avoid; }
+
+    /* Forzar colores en impresión */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+/* ── Overlay de carga del PDF ───────────────────────────────────────── */
+#pdfOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+#pdfOverlay.active { display: flex; }
+#pdfOverlay p { color: white; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; }
+#pdfSpinner {
+    width: 52px; height: 52px;
+    border: 4px solid rgba(255,255,255,0.2);
+    border-top-color: #38bdf8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<!-- Overlay de generación PDF -->
+<div id="pdfOverlay">
+    <div id="pdfSpinner"></div>
+    <p>Generando PDF, por favor espera...</p>
+</div>
+
+<div class="space-y-10" id="reporteContenido">
     <!-- Encabezado -->
-    <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden relative">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden relative">
         <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl -ml-20 -mb-20 pointer-events-none"></div>
         
@@ -79,17 +142,23 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 <h2 class="text-3xl lg:text-4xl font-black text-slate-800 tracking-tight outfit-font">Reportes <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-sky-500">Generales</span></h2>
                 <p class="text-slate-500 mt-2 font-medium max-w-xl">Métricas de rendimiento, análisis de ventas y visión panorámica del negocio.</p>
             </div>
-            <button onclick="window.print()" class="bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-300 px-6 py-3 rounded-2xl font-bold shadow-sm transition-all flex items-center gap-2">
-                <i class="fas fa-print"></i>
-                Imprimir Reporte
-            </button>
+            <div class="flex items-center gap-3 flex-wrap">
+                <button onclick="generarPDF()" class="bg-gradient-to-r from-indigo-500 to-sky-500 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-500/30 transition-all hover:-translate-y-0.5 flex items-center gap-2 no-print">
+                    <i class="fas fa-file-pdf"></i>
+                    Descargar PDF
+                </button>
+                <button onclick="window.print()" class="bg-white border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-300 px-6 py-3 rounded-2xl font-bold shadow-sm transition-all flex items-center gap-2 no-print">
+                    <i class="fas fa-print"></i>
+                    Imprimir
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- KPIs Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Ingresos -->
-        <div class="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+        <div class="kpi-card glass-card rounded-[2rem] p-6 border border-slate-100 premium-shadow relative overflow-hidden group hover:shadow-2xl transition-shadow">
             <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <i class="fas fa-wallet text-6xl text-emerald-500"></i>
             </div>
@@ -101,10 +170,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </div>
 
         <!-- Ventas -->
-        <div class="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-            <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                <i class="fas fa-shopping-cart text-6xl text-indigo-500"></i>
-            </div>
+        <div class="kpi-card glass-card rounded-[2rem] p-6 border border-slate-100 premium-shadow relative overflow-hidden group hover:shadow-2xl transition-shadow">
             <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center text-xl mb-4 shadow-sm border border-indigo-100">
                 <i class="fas fa-chart-line"></i>
             </div>
@@ -113,10 +179,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </div>
 
         <!-- Lotes -->
-        <div class="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-            <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                <i class="fas fa-boxes-stacked text-6xl text-amber-500"></i>
-            </div>
+        <div class="kpi-card glass-card rounded-[2rem] p-6 border border-slate-100 premium-shadow relative overflow-hidden group hover:shadow-2xl transition-shadow">
             <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl mb-4 shadow-sm border border-amber-100">
                 <i class="fas fa-industry"></i>
             </div>
@@ -125,10 +188,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </div>
 
         <!-- Productos -->
-        <div class="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-            <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                <i class="fas fa-cubes text-6xl text-sky-500"></i>
-            </div>
+        <div class="kpi-card glass-card rounded-[2rem] p-6 border border-slate-100 premium-shadow relative overflow-hidden group hover:shadow-2xl transition-shadow">
             <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-500 flex items-center justify-center text-xl mb-4 shadow-sm border border-sky-100">
                 <i class="fas fa-bottle-water"></i>
             </div>
@@ -140,7 +200,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     <!-- Gráficos -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Gráfico Ventas por Estado -->
-        <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
+        <div class="chart-card bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
             <h3 class="text-lg font-black text-slate-800 mb-6 outfit-font flex items-center gap-2">
                 <i class="fas fa-chart-pie text-indigo-500"></i> Estados de Pedidos
             </h3>
@@ -154,7 +214,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </div>
 
         <!-- Gráfico Productos Top -->
-        <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
+        <div class="chart-card bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm">
             <h3 class="text-lg font-black text-slate-800 mb-6 outfit-font flex items-center gap-2">
                 <i class="fas fa-trophy text-amber-500"></i> Top Productos Vendidos
             </h3>
@@ -166,8 +226,8 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 <?php endif; ?>
             </div>
         </div>
-    </div>
-</div>
+    </div><!-- /grid gráficos -->
+</div><!-- /reporteContenido -->
 
 <?php
 // Preparar datos para los gráficos
@@ -256,6 +316,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     <?php endif; ?>
 });
+
+// Función para generar PDF
+async function generarPDF() {
+    const overlay = document.getElementById('pdfOverlay');
+    overlay.classList.add('active');
+    
+    try {
+        const { jsPDF } = window.jspdf;
+        const contenido = document.getElementById('reporteContenido');
+        
+        // Configuramos html2canvas
+        const canvas = await html2canvas(contenido, {
+            scale: 2, // Mejor resolución
+            useCORS: true,
+            logging: false,
+            backgroundColor: '#ffffff'
+        });
+        
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        
+        // A4 dimension
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('reporte_trigestion.pdf');
+        
+    } catch (error) {
+        console.error('Error generando el PDF:', error);
+        alert('Hubo un error al generar el PDF. Por favor intenta de nuevo.');
+    } finally {
+        overlay.classList.remove('active');
+    }
+}
 </script>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

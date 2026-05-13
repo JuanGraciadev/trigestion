@@ -12,10 +12,19 @@ unset($_SESSION['alert']);
     <title>MOOVA! - Registro de Cliente</title>
     <link rel="shortcut icon" type="image/png" href="../../img/trigestion.png">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../CSS/app.css">
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .water-gradient { background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); }
+        .glass-input { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); }
+        .animate-fade { animation: fadeIn 0.6s ease-out; }
+        .animate-slide { animation: slideUp 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden">
@@ -64,7 +73,7 @@ unset($_SESSION['alert']);
             </div>
 
             <!-- Right Side: Registration Form -->
-            <div class="flex-1 p-8 md:p-14">
+            <div class="flex-1 p-8 md:p-14 bg-white/50 relative">
                 <div class="mb-10">
                     <a href="../../index.php" class="inline-flex items-center gap-2 text-sky-500 hover:text-sky-600 transition-colors text-[13px] font-bold mb-6 tracking-wide">
                         <i class="fas fa-arrow-left"></i> Volver al inicio
@@ -79,16 +88,26 @@ unset($_SESSION['alert']);
                     <div class="grid md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nombres Completos</label>
-                            <input type="text" name="nombres" required maxlength="100"
-                                class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
-                                placeholder="Ej. Juan Pérez">
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" name="nombres" required maxlength="100"
+                                    class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                    placeholder="Ej. Juan Pérez">
+                            </div>
                         </div>
 
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Dirección de Entrega</label>
-                            <input type="text" name="direccion" required maxlength="100"
-                                class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
-                                placeholder="Ej. Calle 10 #45-67">
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </span>
+                                <input type="text" name="direccion" required maxlength="100"
+                                    class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                    placeholder="Ej. Calle 10 #45-67">
+                            </div>
                         </div>
                     </div>
 
@@ -96,11 +115,11 @@ unset($_SESSION['alert']);
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Correo Electrónico</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
                                     <i class="fas fa-envelope"></i>
                                 </span>
                                 <input type="email" name="email" required maxlength="150"
-                                    class="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
                                     placeholder="juan@ejemplo.com">
                             </div>
                         </div>
@@ -108,11 +127,11 @@ unset($_SESSION['alert']);
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Documento / Identificación</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
                                     <i class="fas fa-id-card"></i>
                                 </span>
                                 <input type="text" name="documento_numero" required maxlength="150"
-                                    class="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
                                     placeholder="Número de Cédula/NIT">
                             </div>
                         </div>
@@ -121,7 +140,7 @@ unset($_SESSION['alert']);
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Teléfono de Contacto</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
                                 <i class="fas fa-phone"></i>
                             </span>
                             <input type="text" name="telefono" required maxlength="30"
@@ -134,11 +153,11 @@ unset($_SESSION['alert']);
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Contraseña</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
                                     <i class="fas fa-lock"></i>
                                 </span>
                                 <input type="password" name="password" required
-                                    class="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
                                     placeholder="••••••••">
                             </div>
                         </div>
@@ -146,21 +165,22 @@ unset($_SESSION['alert']);
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Confirmar Contraseña</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
                                     <i class="fas fa-check-double"></i>
                                 </span>
                                 <input type="password" name="confirmar_password" required
-                                    class="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
                                     placeholder="••••••••">
                             </div>
                         </div>
                     </div>
 
                     <div class="flex items-start gap-3 px-1">
-                        <div class="flex items-center h-6">
-                            <input id="terms" type="checkbox" required class="w-5 h-5 border-slate-300 rounded-lg text-sky-600 focus:ring-sky-500">
+                        <div class="relative flex items-center justify-center mt-0.5">
+                            <input id="terms" type="checkbox" required class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md bg-white checked:bg-sky-500 checked:border-sky-500 transition-all cursor-pointer shadow-sm">
+                            <i class="fas fa-check absolute text-[10px] text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></i>
                         </div>
-                        <label for="terms" class="text-sm text-slate-500 leading-snug">
+                        <label for="terms" class="text-sm text-slate-600 font-medium leading-snug cursor-pointer select-none">
                             Acepto los <a href="#" class="text-sky-600 font-bold hover:underline">términos de servicio</a> y la política de tratamiento de datos personales y comerciales de MOOVA!.
                         </label>
                     </div>

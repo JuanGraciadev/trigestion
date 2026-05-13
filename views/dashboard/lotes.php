@@ -21,7 +21,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 ?>
 
 <div class="space-y-10">
-    <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden">
+    <div class="glass-card rounded-[2.5rem] premium-shadow border border-slate-100 overflow-hidden">
         <div class="p-8 md:p-10 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-slate-50 to-white relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
             <div class="relative z-10">
@@ -124,7 +124,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Modal Crear Lote -->
 <div id="modalCrearLote" class="fixed inset-0 bg-slate-900/60 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden animate-fade-in">
+    <div class="glass-card rounded-[2.5rem] premium-shadow w-full max-w-md overflow-hidden animate-fade-in">
         <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <div>
                 <h3 class="text-2xl font-bold text-slate-800">Paso 1: Nuevo Lote</h3>
@@ -137,7 +137,10 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         <form action="../../controllers/LoteController.php?accion=crear" method="POST" class="p-8 space-y-6">
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase ml-1">Código del Lote</label>
-                <input type="text" name="codigo_lote" required placeholder="Ej. L-202310A" class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all font-bold text-slate-700">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-barcode"></i></span>
+                    <input type="text" name="codigo_lote" required placeholder="Ej. L-202310A" class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all font-bold text-slate-700">
+                </div>
             </div>
             <div class="flex justify-end gap-4 pt-4 border-t border-slate-100">
                 <button type="button" onclick="closeModal('modalCrearLote')" class="px-8 py-4 text-slate-500 font-bold hover:text-slate-800 transition-colors">Cancelar</button>
@@ -151,7 +154,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Modal Editar Lote -->
 <div id="modalEditarLote" class="fixed inset-0 bg-slate-900/60 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden animate-fade-in">
+    <div class="glass-card rounded-[2.5rem] premium-shadow w-full max-w-md overflow-hidden animate-fade-in">
         <div class="p-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <div>
                 <h3 class="text-2xl font-bold text-slate-800">Editar Lote</h3>
@@ -164,7 +167,10 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             <input type="hidden" name="id_lote" id="edit_id_lote">
             <div class="space-y-2">
                 <label class="text-xs font-bold text-slate-500 uppercase ml-1">Código del Lote</label>
-                <input type="text" name="codigo_lote" id="edit_codigo_lote" required class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all font-bold text-slate-700">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400"><i class="fas fa-barcode"></i></span>
+                    <input type="text" name="codigo_lote" id="edit_codigo_lote" required class="w-full pl-12 pr-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all font-bold text-slate-700">
+                </div>
             </div>
             <div class="flex justify-end gap-4 pt-4 border-t border-slate-100">
                 <button type="button" onclick="closeModal('modalEditarLote')" class="px-8 py-4 text-slate-500 font-bold hover:text-slate-800 transition-colors">Cancelar</button>

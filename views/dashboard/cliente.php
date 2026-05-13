@@ -45,6 +45,39 @@ require_once __DIR__ . '/../layouts/header.php';
 require_once __DIR__ . '/../layouts/sidebar.php';
 ?>
 
+<style>
+/* Cart Sidebar Overlay */
+.cart-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
+    z-index: 40; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cart-overlay.open { opacity: 1; visibility: visible; }
+
+/* Cart Sidebar */
+.cart-sidebar {
+    position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh;
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    z-index: 50; box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+    transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex; flex-direction: column;
+}
+.cart-sidebar.open { right: 0; }
+
+/* Stock Badges */
+.stock-badge-0 { background-color: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+.stock-badge-low { background-color: #fffbeb; color: #f59e0b; border: 1px solid #fde68a; }
+.stock-badge-ok { background-color: #f0fdf4; color: #10b981; border: 1px solid #bbf7d0; }
+
+/* Badge Flotante */
+.badge-cart {
+    position: absolute; top: -8px; right: -8px; background: linear-gradient(135deg, #f43f5e, #e11d48);
+    color: white; font-size: 11px; font-weight: 900; border-radius: 999px; min-width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center; border: 2px solid #0f172a;
+    box-shadow: 0 4px 10px rgba(225, 29, 72, 0.4); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.badge-cart.scale-110 { transform: scale(1.2); }
+</style>
 
 <!-- Cart overlay -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
@@ -177,7 +210,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             $stock_badge = $sin_stock ? 'stock-badge-0' : ($stock < 5 ? 'stock-badge-low' : 'stock-badge-ok');
             $stock_label = $sin_stock ? 'Sin Stock' : ($stock < 5 ? "Quedan {$stock}" : "Stock: {$stock}");
         ?>
-        <div class="product-card bg-white rounded-[2rem] border border-slate-100 overflow-hidden hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-400 group flex flex-col relative <?= $sin_stock ? 'opacity-60 grayscale-[30%]' : '' ?>" data-nombre="<?= strtolower(htmlspecialchars($p['nombre'])) ?>">
+        <div class="product-card glass-card rounded-[2rem] border border-slate-100 overflow-hidden premium-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col relative <?= $sin_stock ? 'opacity-60 grayscale-[30%]' : '' ?>" data-nombre="<?= strtolower(htmlspecialchars($p['nombre'])) ?>">
             
             <!-- Etiqueta de Stock Flotante -->
             <div class="absolute top-5 right-5 z-10">
@@ -191,7 +224,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(14,165,233,0.05)_0,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
                 <?php if(!empty($p['img'])): ?>
-                    <img src="<?= htmlspecialchars($p['img']) ?>" alt="Producto" class="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-700 ease-out drop-shadow-xl">
+                    <img src="<?= htmlspecialchars($p['img']) ?>" alt="Producto" class="max-w-[75%] max-h-[75%] object-contain relative z-[5] group-hover:scale-105 transition-transform duration-700 ease-out drop-shadow-xl">
                 <?php else: ?>
                     <div class="w-32 h-32 rounded-full bg-sky-50 flex items-center justify-center relative z-10 group-hover:scale-110 transition-transform duration-700">
                         <i class="fas fa-bottle-water text-6xl text-sky-200"></i>
