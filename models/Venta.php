@@ -1,9 +1,55 @@
 <?php
 class Venta {
     private $conn;
+    private $clienteUsuarioCol = null; // Cache: nombre real de la columna FK en 'cliente'
 
     public function __construct($db) {
         $this->conn = $db;
+        $this->detectClienteColumn();
+    }
+
+    /**
+     * Detecta si la tabla 'cliente' usa 'id_usuario' o 'id_usuarios' como FK.
+     * Esto resuelve la incompatibilidad entre el schema original (id_usuarios)
+     * y el código que esperaba (id_usuario).
+     */
+    private function detectClienteColumn() {
+        try {
+            $cols = $this->conn->query("SHOW COLUMNS FROM cliente")->fetchAll(PDO::FETCH_COLUMN);
+            if (in_array('id_usuario', $cols)) {
+                $this->clienteUsuarioCol = 'id_usuario';
+            } elseif (in_array('id_usuarios', $cols)) {
+                $this->clienteUsuarioCol = 'id_usuarios';
+            } else {
+                // Intentar agregar la columna si no existe ninguna de las dos
+                $this->clienteUsuarioCol = 'id_usuario';
+                try {
+                    $this->conn->exec("ALTER TABLE cliente ADD COLUMN id_usuario INT DEFAULT NULL");
+                } catch (PDOException $e) { /* ya existe */ }
+            }
+        } catch (PDOException $e) {
+            $this->clienteUsuarioCol = 'id_usuario';
+        }
+    }
+
+    /**
+     * Busca o crea un registro de cliente a partir del id_usuario.
+     * Usa el nombre correcto de columna detectado dinámicamente.
+     */
+    private function obtenerOcrearCliente($id_usuario) {
+        $col = $this->clienteUsuarioCol;
+
+        $stmtC = $this->conn->prepare("SELECT id_cliente FROM cliente WHERE {$col} = :id_usuario");
+        $stmtC->execute([':id_usuario' => $id_usuario]);
+        $id_cliente = $stmtC->fetchColumn();
+
+        if (!$id_cliente) {
+            $stmtInsert = $this->conn->prepare("INSERT INTO cliente ({$col}) VALUES (:id)");
+            $stmtInsert->execute([':id' => $id_usuario]);
+            $id_cliente = $this->conn->lastInsertId();
+        }
+
+        return $id_cliente;
     }
 
     // ─── Stock disponible por producto ─────────────────────────────────────────
@@ -44,16 +90,8 @@ class Venta {
                 }
             }
 
-            // Buscar id_cliente asociado al id_usuario
-            $stmtC = $this->conn->prepare("SELECT id_cliente FROM cliente WHERE id_usuario = :id_usuario");
-            $stmtC->execute([':id_usuario' => $id_usuario]);
-            $id_cliente = $stmtC->fetchColumn();
-
-            if (!$id_cliente) {
-                $stmtInsert = $this->conn->prepare("INSERT INTO cliente (id_usuario) VALUES (:id)");
-                $stmtInsert->execute([':id' => $id_usuario]);
-                $id_cliente = $this->conn->lastInsertId();
-            }
+            // Buscar o crear id_cliente asociado al id_usuario
+            $id_cliente = $this->obtenerOcrearCliente($id_usuario);
 
             // Calcular total
             $total = 0;
@@ -110,16 +148,8 @@ class Venta {
                 }
             }
 
-            // Buscar id_cliente asociado al id_usuario del cliente
-            $stmtC = $this->conn->prepare("SELECT id_cliente FROM cliente WHERE id_usuario = :id_usuario");
-            $stmtC->execute([':id_usuario' => $id_usuario_cliente]);
-            $id_cliente = $stmtC->fetchColumn();
-
-            if (!$id_cliente) {
-                $stmtInsert = $this->conn->prepare("INSERT INTO cliente (id_usuario) VALUES (:id)");
-                $stmtInsert->execute([':id' => $id_usuario_cliente]);
-                $id_cliente = $this->conn->lastInsertId();
-            }
+            // Buscar o crear id_cliente asociado al id_usuario del cliente
+            $id_cliente = $this->obtenerOcrearCliente($id_usuario_cliente);
 
             // Calcular total
             $total = 0;
@@ -181,6 +211,7 @@ class Venta {
 
     // ─── Obtener todas las ventas (admin) ─────────────────────────────────────
     public function obtenerTodas() {
+        $col = $this->clienteUsuarioCol;
         $sql = "SELECT v.*,
                        u.nombres  AS cliente_nombre,
                        u.email    AS cliente_email,
@@ -188,7 +219,7 @@ class Venta {
                        u.direccion AS cliente_direccion
                 FROM venta v
                 LEFT JOIN cliente c ON v.id_cliente = c.id_cliente
-                LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario
+                LEFT JOIN usuarios u ON c.{$col} = u.id_usuario
                 ORDER BY v.id_venta DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -208,12 +239,13 @@ class Venta {
 
     // ─── Ventas de un cliente ─────────────────────────────────────────────────
     public function obtenerPorCliente($id_usuario) {
+        $col = $this->clienteUsuarioCol;
         $sql = "SELECT v.*, GROUP_CONCAT(p.nombre SEPARATOR ', ') AS productos_lista
                 FROM venta v
                 LEFT JOIN detalle_venta dv ON v.id_venta = dv.id_venta
                 LEFT JOIN producto p       ON dv.id_producto = p.id_producto
                 LEFT JOIN cliente c        ON v.id_cliente = c.id_cliente
-                WHERE c.id_usuario = :id_usuario
+                WHERE c.{$col} = :id_usuario
                 GROUP BY v.id_venta
                 ORDER BY v.id_venta DESC";
         $stmt = $this->conn->prepare($sql);

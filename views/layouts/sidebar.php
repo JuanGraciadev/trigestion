@@ -3,7 +3,8 @@ $id_rol = $usuario['id_rol'];
 $nombreCompleto = $usuario['nombres'];
 ?>
 
-<aside class="w-[280px] bg-[#090e17] text-slate-400 flex flex-col z-30 relative shadow-[10px_0_40px_-15px_rgba(0,0,0,0.5)] border-r border-white/5">
+<div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/50 z-30 hidden lg:hidden backdrop-blur-sm transition-opacity opacity-0" onclick="toggleSidebar()"></div>
+<aside id="sidebar" class="w-[280px] bg-[#090e17] text-slate-400 flex flex-col z-40 fixed inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition-transform duration-300 shadow-[10px_0_40px_-15px_rgba(0,0,0,0.5)] border-r border-white/5">
     <!-- Decals -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
@@ -128,11 +129,16 @@ $nombreCompleto = $usuario['nombres'];
 </aside>
 
 <!-- Top Navbar Replacement and Content Wrapper -->
-<div class="flex-1 flex flex-col min-h-screen relative overflow-hidden">
-    <header class="h-24 glass-panel px-10 flex items-center justify-between sticky top-0 z-20">
-        <div>
-            <h1 class="text-[28px] font-extrabold text-slate-800 tracking-tight outfit-font"><?= htmlspecialchars($titulo) ?></h1>
-            <p class="text-sm text-slate-500 font-medium">Bienvenido al panel de control de MOOVA!</p>
+<div class="flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
+    <header class="h-20 sm:h-24 glass-panel px-4 sm:px-10 flex items-center justify-between sticky top-0 z-20 gap-2 sm:gap-4">
+        <div class="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+            <button class="lg:hidden shrink-0 w-10 h-10 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-300 hover:shadow-md transition-all flex items-center justify-center focus:outline-none" onclick="toggleSidebar()">
+                <i class="fas fa-bars text-lg"></i>
+            </button>
+            <div class="min-w-0">
+                <h1 class="text-[18px] sm:text-[28px] font-extrabold text-slate-800 tracking-tight outfit-font truncate"><?= htmlspecialchars($titulo) ?></h1>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium hidden sm:block">Bienvenido al panel de control de MOOVA!</p>
+            </div>
         </div>
 
         <div class="flex items-center gap-6">
@@ -210,4 +216,27 @@ $nombreCompleto = $usuario['nombres'];
     </header>
 
     <!-- Content Area -->
-    <main class="p-10 flex-1">
+    <main class="p-4 sm:p-10 flex-1 overflow-x-hidden">
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Open
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                // Timeout for transition
+                setTimeout(() => {
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                // Close
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                }, 300);
+            }
+        }
+    </script>

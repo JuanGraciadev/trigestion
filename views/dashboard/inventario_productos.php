@@ -168,7 +168,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
               </div>
             </div>
             
-            <div class="grid grid-cols-4 gap-3 text-center relative z-10">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center relative z-10">
               <div class="bg-violet-50/80 rounded-2xl p-2 border border-violet-100/50 hover:bg-violet-100 transition-colors">
                 <p class="text-xl font-black text-violet-600"><?= number_format($s['total_ingresado']) ?></p>
                 <p class="text-[9px] font-bold text-violet-500 uppercase mt-1">Producido</p>

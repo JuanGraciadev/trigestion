@@ -82,7 +82,7 @@ $totalProds  = array_sum(array_map('count', $productosPorCategoria));
     <?php unset($_SESSION['alert']); endif; ?>
 
     <!-- ── Stats ───────────────────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-up delay-100">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-up delay-100">
         <?php
         $statsData = [
             ['Total Categorías',  $totalCats,   'fa-folder-open',   'from-indigo-400 to-purple-500',  'text-indigo-600',  'bg-indigo-50',  'shadow-[0_10px_30px_rgba(99,102,241,0.15)]'],

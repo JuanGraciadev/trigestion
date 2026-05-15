@@ -1,6 +1,4 @@
-<?php
-session_start();
-?>
+
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
@@ -97,29 +95,45 @@ session_start();
 
     <!-- Navbar -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-3">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center gap-3">
                 <img src="img/triges.png" alt="MOOVA Logo" class="h-10 w-auto drop-shadow-md">
-                <span class="text-3xl font-black text-sky-800 tracking-tight">MOOVA!</span>
+                <span class="text-2xl sm:text-3xl font-black text-sky-800 tracking-tight">MOOVA!</span>
             </div>
             
-            <!-- Navigation Links -->
+            <!-- Mobile Menu Button -->
+            <button id="mobileMenuBtn" class="md:hidden w-11 h-11 rounded-xl bg-white/80 backdrop-blur-md border border-sky-100 text-sky-700 flex items-center justify-center shadow-sm hover:bg-sky-50 transition-all" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-lg" id="menuIcon"></i>
+            </button>
+
+            <!-- Navigation Links (Desktop) -->
             <div class="hidden md:flex items-center gap-8 font-bold text-slate-600">
                 <a href="#beneficios" class="hover:text-sky-600 transition-colors">Beneficios</a>
                 <a href="#productos" class="hover:text-sky-600 transition-colors">Productos</a>
-                
-                <?php if(isset($_SESSION['usuario'])): ?>
-                    <a href="views/dashboard/<?= $_SESSION['usuario']['id_rol'] == 1 ? 'admin.php' : ($_SESSION['usuario']['id_rol'] == 2 ? 'produccion.php' : 'cliente.php') ?>" 
-                       class="btn-shine px-7 py-3 rounded-full bg-white border border-sky-200 hover:border-sky-500 text-sky-700 transition-all font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                        <i class="fas fa-layer-group mr-1.5"></i> Mi Panel
-                    </a>
-                <?php else: ?>
-                    <a href="views/usuarios/login.php" class="text-sky-800 hover:text-sky-600 transition-colors">Iniciar Sesión</a>
-                    <a href="views/usuarios/registre.php" class="btn-shine px-8 py-3.5 rounded-full bg-water-gradient shadow-[0_10px_20px_-5px_rgba(14,165,233,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.6)] transition-all text-white font-bold transform hover:-translate-y-1 tracking-wide">
-                        Pedir Ahora <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                <?php endif; ?>
+                <a href="views/usuarios/login.php" class="text-sky-800 hover:text-sky-600 transition-colors">Iniciar Sesión</a>
+                <a href="views/usuarios/registre.php" class="btn-shine px-8 py-3.5 rounded-full bg-water-gradient shadow-[0_10px_20px_-5px_rgba(14,165,233,0.5)] hover:shadow-[0_15px_30px_-5px_rgba(14,165,233,0.6)] transition-all text-white font-bold transform hover:-translate-y-1 tracking-wide">
+                    Registrarse <i class="fas fa-user-plus ml-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="md:hidden hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-sky-100 shadow-[0_15px_30px_-10px_rgba(0,0,0,0.1)] animate-fade">
+            <div class="flex flex-col gap-2 p-4 max-w-7xl mx-auto">
+                <a href="#beneficios" onclick="toggleMobileMenu()" class="px-5 py-3.5 rounded-xl text-slate-700 font-bold hover:bg-sky-50 hover:text-sky-600 transition-all flex items-center gap-3">
+                    <i class="fas fa-shield-halved text-sky-400 w-5"></i> Beneficios
+                </a>
+                <a href="#productos" onclick="toggleMobileMenu()" class="px-5 py-3.5 rounded-xl text-slate-700 font-bold hover:bg-sky-50 hover:text-sky-600 transition-all flex items-center gap-3">
+                    <i class="fas fa-bottle-water text-sky-400 w-5"></i> Productos
+                </a>
+                <div class="border-t border-slate-100 my-2"></div>
+                <a href="views/usuarios/login.php" class="px-5 py-3.5 rounded-xl text-slate-700 font-bold hover:bg-slate-50 transition-all flex items-center gap-3">
+                    <i class="fas fa-right-to-bracket text-sky-400 w-5"></i> Iniciar Sesión
+                </a>
+                <a href="views/usuarios/registre.php" class="px-5 py-3.5 rounded-xl bg-water-gradient text-white font-bold text-center shadow-md">
+                    <i class="fas fa-user-plus mr-2"></i> Registrarse
+                </a>
             </div>
         </div>
     </nav>
@@ -132,7 +146,7 @@ session_start();
             <div class="absolute inset-0 bg-gradient-to-b from-sky-50/70 via-white/40 to-white"></div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-6 relative z-10 w-full grid lg:grid-cols-2 gap-12 items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             
             <!-- Left Text -->
             <div class="text-center lg:text-left mt-10 lg:mt-0 reveal">
@@ -145,7 +159,7 @@ session_start();
                     <span class="text-sm font-black text-sky-700 uppercase tracking-widest">Frescura y Pureza</span>
                 </div>
                 
-                <h1 class="text-5xl md:text-7xl font-black text-slate-800 leading-[1.1] mb-6 tracking-tight drop-shadow-sm">
+                <h1 class="text-3xl sm:text-5xl md:text-7xl font-black text-slate-800 leading-[1.1] mb-6 tracking-tight drop-shadow-sm">
                     La mejor <span class="text-water-gradient">hidratación</span> para tu familia.
                 </h1>
                 
@@ -195,7 +209,7 @@ session_start();
                 <p class="text-slate-500 max-w-2xl mx-auto font-medium text-lg leading-relaxed">Nos preocupamos por tu salud y bienestar, por eso nuestro proceso garantiza la máxima calidad en cada gota.</p>
             </div>
             
-            <div class="grid md:grid-cols-3 gap-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10">
                 <div class="water-glass p-12 rounded-[3rem] text-center group hover:-translate-y-4 hover:shadow-[0_20px_40px_-10px_rgba(14,165,233,0.15)] transition-all duration-500 reveal">
                     <div class="w-24 h-24 mx-auto rounded-3xl bg-gradient-to-br from-sky-100 to-blue-50 text-sky-500 flex items-center justify-center text-4xl mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-inner border border-sky-100/50">
                         <i class="fas fa-tint drop-shadow-md"></i>
@@ -239,7 +253,7 @@ session_start();
                 <p class="text-slate-500 max-w-2xl mx-auto font-medium text-lg leading-relaxed">Conoce nuestra línea de hidratación. Agua pura, alcalina y mineralizada en presentaciones adaptadas a tu estilo de vida.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10">
                 <!-- Producto 1: Garrafón -->
                 <div class="glass-card rounded-[3rem] p-8 border border-slate-100 premium-shadow hover:shadow-[0_30px_60px_-15px_rgba(14,165,233,0.2)] hover:-translate-y-3 transition-all duration-500 group flex flex-col relative overflow-hidden bg-white reveal">
                     <div class="absolute top-6 left-6 z-10 bg-white/90 backdrop-blur border border-slate-200 px-3 py-1.5 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-wider shadow-sm">
@@ -323,7 +337,7 @@ session_start();
 
     <!-- Call to Action -->
     <section class="py-28 px-6 relative">
-        <div class="max-w-5xl mx-auto water-glass p-14 md:p-24 rounded-[3.5rem] text-center relative overflow-hidden bg-gradient-to-r from-sky-600 to-indigo-600 border-none shadow-[0_30px_60px_-15px_rgba(14,165,233,0.5)] reveal">
+        <div class="max-w-5xl mx-auto water-glass p-8 sm:p-14 md:p-24 rounded-[2rem] sm:rounded-[3.5rem] text-center relative overflow-hidden bg-gradient-to-r from-sky-600 to-indigo-600 border-none shadow-[0_30px_60px_-15px_rgba(14,165,233,0.5)] reveal">
             <!-- Decorative background inside CTA -->
             <div class="absolute inset-0 bg-[url('img/login_bg.png')] opacity-10 mix-blend-overlay bg-cover bg-center"></div>
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -333,7 +347,7 @@ session_start();
                 <div class="w-24 h-24 mx-auto rounded-3xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 mb-8 transform -rotate-3 hover:rotate-3 transition-transform duration-300">
                     <i class="fas fa-bottle-water text-5xl text-white"></i>
                 </div>
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight drop-shadow-md">Refresca tu vida hoy.</h2>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tight drop-shadow-md">Refresca tu vida hoy.</h2>
                 <p class="text-sky-100 mb-10 font-medium text-lg md:text-xl max-w-2xl mx-auto opacity-90">Únete a nuestra plataforma premium y mantén tu hogar siempre hidratado con la mejor calidad del mercado.</p>
                 <a href="views/usuarios/registre.php" class="btn-shine inline-flex items-center gap-2 px-10 py-5 rounded-full bg-white text-sky-700 font-black hover:-translate-y-1 hover:shadow-xl transition-all text-lg tracking-wide">
                     <i class="fas fa-user-plus mr-1"></i> Crear cuenta de cliente
@@ -355,6 +369,20 @@ session_start();
     </footer>
 
     <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        }
+
         // Navbar scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');

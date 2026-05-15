@@ -1,7 +1,7 @@
     </main> <!-- Cierra main content area -->
     
     <!-- Footer Premium Tech-Dashboard -->
-    <footer class="mt-auto bg-white/80 backdrop-blur-2xl border-t border-slate-200/60 relative z-10 px-10 py-5">
+    <footer class="mt-auto bg-white/80 backdrop-blur-2xl border-t border-slate-200/60 relative z-10 px-4 sm:px-10 py-5">
         <div class="flex flex-col md:flex-row items-center justify-between gap-6">
             
             <!-- Izquierda: Copyright, Brand y Version -->

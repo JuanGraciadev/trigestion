@@ -84,7 +84,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Cart Sidebar -->
 <div class="cart-sidebar" id="cartSidebar">
-    <div class="p-8 border-b border-slate-200/60 flex items-center justify-between bg-white/50 relative z-10">
+    <div class="p-5 sm:p-8 border-b border-slate-200/60 flex items-center justify-between bg-white/50 relative z-10">
         <div>
             <h3 class="text-2xl font-extrabold text-slate-800 outfit-font tracking-tight">Mi Pedido</h3>
             <p class="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Revisión de Carrito</p>
@@ -95,7 +95,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Items -->
-    <div class="flex-1 overflow-y-auto p-8 space-y-4 custom-scrollbar" id="cartItems">
+    <div class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-4 custom-scrollbar" id="cartItems">
         <div class="text-center py-20 text-slate-400" id="cartEmpty" style="display:none">
             <div class="w-24 h-24 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-6 border border-slate-100">
                 <i class="fas fa-shopping-basket text-4xl opacity-30 text-slate-500"></i>
@@ -106,7 +106,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Footer checkout -->
-    <div class="p-8 border-t border-slate-200/60 bg-white/80 backdrop-blur-md relative z-10">
+    <div class="p-5 sm:p-8 border-t border-slate-200/60 bg-white/80 backdrop-blur-md relative z-10">
         <div class="flex justify-between items-end mb-6 bg-slate-50 p-5 rounded-2xl border border-slate-100">
             <span class="text-slate-500 font-bold uppercase tracking-wider text-xs">Total Estimado</span>
             <span class="text-3xl font-black text-sky-600 outfit-font" id="cartTotal">$0.00</span>
@@ -131,7 +131,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <div class="max-w-[1400px] mx-auto space-y-10 pb-12">
     <!-- Premium Hero Banner -->
-    <div class="relative rounded-[2.5rem] shadow-[0_20px_50px_-12px_rgba(14,165,233,0.1)] border border-white overflow-hidden p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-10 bg-gradient-to-br from-white via-sky-50/50 to-indigo-50/30">
+    <div class="relative rounded-[1.5rem] sm:rounded-[2.5rem] shadow-[0_20px_50px_-12px_rgba(14,165,233,0.1)] border border-white overflow-hidden p-6 sm:p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10 bg-gradient-to-br from-white via-sky-50/50 to-indigo-50/30">
         <!-- Decoraciones de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-sky-400/20 to-indigo-500/20 rounded-full blur-3xl"></div>
@@ -145,7 +145,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 <span class="w-2 h-2 rounded-full bg-sky-500 relative"></span>
                 <span class="text-[11px] font-black text-slate-700 uppercase tracking-widest">Catálogo Oficial</span>
             </div>
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 mb-4 tracking-tight outfit-font leading-tight">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 mb-4 tracking-tight outfit-font leading-tight">
                 Hidratación <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600">Premium</span>
             </h2>
             <p class="text-slate-500 text-lg font-medium max-w-lg leading-relaxed">

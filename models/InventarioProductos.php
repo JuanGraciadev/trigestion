@@ -2,10 +2,24 @@
 class InventarioProductos {
     private $conn;
     private $table = 'inventario_productos';
+    private $clienteUsuarioCol = 'id_usuario'; // default
 
     public function __construct($db) {
         $this->conn = $db;
         $this->asegurarTabla();
+        $this->detectClienteColumn();
+    }
+
+    /**
+     * Detecta si la tabla 'cliente' usa 'id_usuario' o 'id_usuarios'.
+     */
+    private function detectClienteColumn() {
+        try {
+            $cols = $this->conn->query("SHOW COLUMNS FROM cliente")->fetchAll(PDO::FETCH_COLUMN);
+            if (in_array('id_usuarios', $cols)) {
+                $this->clienteUsuarioCol = 'id_usuarios';
+            }
+        } catch (PDOException $e) {}
     }
 
     private function asegurarTabla() {
@@ -86,6 +100,7 @@ class InventarioProductos {
 
     /** Lista todos los registros de salidas (ventas) */
     public function obtenerSalidas() {
+        $col = $this->clienteUsuarioCol;
         $sql = "SELECT 
                     dv.id_detalle_de_venta AS id_salida,
                     v.id_venta,
@@ -100,7 +115,7 @@ class InventarioProductos {
                 LEFT JOIN producto prod ON dv.id_producto = prod.id_producto
                 LEFT JOIN categoria cat ON prod.id_categoria = cat.id_categoria
                 LEFT JOIN cliente c ON v.id_cliente = c.id_cliente
-                LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario
+                LEFT JOIN usuarios u ON c.{$col} = u.id_usuario
                 WHERE v.estado != 'Cancelado'
                 ORDER BY v.fecha DESC, v.id_venta DESC";
         $stmt = $this->conn->prepare($sql);

@@ -161,10 +161,10 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-sm mb-4 shadow-sm">
                 <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>Gestión en Tiempo Real
             </div>
-            <h1 class="text-4xl md:text-6xl font-black text-slate-800 tracking-tight leading-tight">Centro de <br class="hidden md:block" /><span class="premium-gradient-text">Ventas</span></h1>
+            <h1 class="text-3xl sm:text-4xl md:text-6xl font-black text-slate-800 tracking-tight leading-tight">Centro de <br class="hidden md:block" /><span class="premium-gradient-text">Ventas</span></h1>
             <p class="text-slate-500 mt-3 text-base font-medium max-w-md">Supervisa pedidos, ingresos y estados de entrega desde un solo lugar.</p>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex flex-wrap items-center gap-4">
             <?php if ($pendientes > 0): ?>
             <div class="flex items-center gap-3 bg-white border border-amber-200 text-amber-600 px-6 py-4 rounded-2xl font-bold text-sm shadow-[0_8px_30px_rgb(245,158,11,0.2)] relative overflow-hidden group cursor-pointer hover:scale-105 transition-transform">
                 <div class="absolute inset-0 bg-amber-50 translate-y-full group-hover:translate-y-0 transition-transform"></div>
@@ -200,7 +200,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         ['Cancelados', $stats['Cancelado'],  'fa-circle-xmark', 'from-rose-400 to-red-500',      'text-rose-600',   'bg-rose-50',   'shadow-[0_10px_30px_rgba(225,29,72,0.15)]',   'bg-rose-400',   'No procesados'],
     ];
     ?>
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up delay-100">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up delay-100">
         <?php foreach ($tarjetas as [$label, $val, $ico, $grad, $txt, $bg, $shadow, $barColor, $desc]):
             $pct = $totalVentas > 0 ? round(($val / $totalVentas) * 100) : 0;
         ?>
@@ -251,7 +251,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-indigo-300 text-xs font-bold uppercase tracking-[0.2em] mb-3">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Balance General Confirmado
                     </div>
-                    <div class="text-5xl md:text-7xl lg:text-[5rem] font-black text-white tracking-tighter flex items-start justify-center md:justify-start gap-2 [text-shadow:0_10px_30px_rgba(0,0,0,0.5)]">
+                    <div class="text-4xl sm:text-5xl md:text-7xl lg:text-[5rem] font-black text-white tracking-tighter flex items-start justify-center md:justify-start gap-2 [text-shadow:0_10px_30px_rgba(0,0,0,0.5)]">
                         <span class="text-indigo-400 text-3xl lg:text-4xl mt-2">$</span><?= number_format($stats['total_ingresos'], 2) ?>
                     </div>
                     <p class="text-slate-400 text-sm font-medium mt-2">Ingresos totales de ventas entregadas</p>

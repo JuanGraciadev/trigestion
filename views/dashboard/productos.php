@@ -83,7 +83,7 @@ $totalCategorias = count($categorias);
     <?php unset($_SESSION['alert']); endif; ?>
 
     <!-- ── Stats ───────────────────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up delay-100">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up delay-100">
         <?php
         $stats = [
             ['Total Productos',  $totalProductos,  'fa-boxes-stacked', 'from-sky-400 to-indigo-500',    'text-sky-600',     'bg-sky-50',     'shadow-[0_10px_30px_rgba(14,165,233,0.15)]'],
@@ -121,7 +121,7 @@ $totalCategorias = count($categorias);
                     <p class="text-slate-400 text-xs font-medium mt-0.5"><?= $totalProductos ?> artículos registrados</p>
                 </div>
             </div>
-            <div class="relative">
+            <div class="relative w-full sm:w-auto">
                 <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none"></i>
                 <input type="text" id="searchProductos" placeholder="Buscar producto..."
                     class="pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-400 outline-none transition-all text-sm font-medium shadow-sm w-full sm:w-56">
@@ -237,7 +237,7 @@ $totalCategorias = count($categorias);
                         class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-400 outline-none transition-all font-medium text-slate-700 placeholder:text-slate-300">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Precio ($)</label>
                     <div class="relative">
@@ -321,7 +321,7 @@ $totalCategorias = count($categorias);
                         class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-400 outline-none transition-all font-medium text-slate-700">
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Precio ($)</label>
                     <div class="relative">

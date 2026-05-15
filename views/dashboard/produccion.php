@@ -146,7 +146,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             </button>
         </div>
         <form action="../../controllers/ProduccionController.php?accion=crear" method="POST" class="p-8 space-y-6">
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500 uppercase ml-1">Código de Lote</label>
                     <div class="relative">

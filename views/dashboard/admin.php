@@ -111,7 +111,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     <?php unset($_SESSION['alert']); endif; ?>
 
     <!-- ── KPI Cards ───────────────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up delay-100">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up delay-100">
         <?php
         $total_trabajadores = count(array_filter($usuarios, function($u){ return $u['id_rol'] == 2; }));
         $tarjetas = [
@@ -161,10 +161,10 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                     <button onclick="filtrarUsuarios('3')" class="filter-usr px-4 py-2 rounded-xl font-bold text-sm transition-all text-slate-500 hover:bg-white hover:text-amber-600 hover:shadow-sm" data-filter="3">Cliente</button>
                 </div>
                 <!-- Buscador -->
-                <div class="relative">
+                <div class="relative w-full sm:w-auto">
                     <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                     <input type="text" id="searchInput" placeholder="Buscar usuario..."
-                        class="pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm w-64 font-medium shadow-sm">
+                        class="pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm w-full sm:w-64 font-medium shadow-sm">
                 </div>
             </div>
         </div>
