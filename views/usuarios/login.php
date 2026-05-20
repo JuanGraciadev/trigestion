@@ -37,8 +37,8 @@ unset($_SESSION['alert']);
     </div>
 
     <!-- Main Container -->
-    <div class="relative z-10 w-full max-w-5xl px-4 flex items-center justify-center">
-        <div class="glass w-full rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(14,165,233,0.15)] overflow-hidden flex flex-col lg:flex-row min-h-[640px] animate-fade">
+    <div class="relative z-10 w-full max-w-5xl px-3 sm:px-4 py-4 sm:py-0 flex items-center justify-center min-h-screen lg:min-h-0">
+        <div class="glass w-full rounded-2xl sm:rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(14,165,233,0.15)] overflow-hidden flex flex-col lg:flex-row min-h-0 lg:min-h-[640px] animate-fade max-h-[95vh] lg:max-h-none overflow-y-auto lg:overflow-y-visible">
             
             <!-- Left Side: Branding/Info (Hidden on small screens) -->
             <div class="hidden lg:flex lg:w-1/2 water-gradient p-14 text-white flex-col justify-between relative overflow-hidden">
@@ -70,56 +70,56 @@ unset($_SESSION['alert']);
             </div>
 
             <!-- Right Side: Login Form -->
-            <div class="w-full lg:w-1/2 p-10 md:p-14 flex flex-col justify-center bg-white/50 relative">
+            <div class="w-full lg:w-1/2 p-6 sm:p-8 md:p-10 lg:p-14 flex flex-col justify-center bg-white/50 relative">
                 
-                <div class="mb-10 text-center lg:text-left">
-                    <div class="lg:hidden flex items-center justify-center gap-3 mb-10">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-500/30 p-2">
+                <div class="mb-6 sm:mb-10 text-center lg:text-left">
+                    <div class="lg:hidden flex items-center justify-center gap-3 mb-6 sm:mb-10">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-500/30 p-2">
                             <img src="../../img/triges.png" alt="MOOVA Logo" class="w-full h-full object-contain filter brightness-0 invert">
                         </div>
-                        <span class="text-3xl font-black text-slate-800">MOOVA!</span>
+                        <span class="text-2xl sm:text-3xl font-black text-slate-800">MOOVA!</span>
                     </div>
 
-                    <a href="../../index.php" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-slate-500 hover:text-sky-600 hover:bg-sky-50 transition-all text-[12px] font-bold mb-8 shadow-sm border border-slate-200">
+                    <a href="../../index.php" class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-100 text-slate-500 hover:text-sky-600 hover:bg-sky-50 transition-all text-[11px] sm:text-[12px] font-bold mb-5 sm:mb-8 shadow-sm border border-slate-200">
                         <i class="fas fa-arrow-left"></i> Volver al inicio
                     </a>
                     
-                    <h1 class="text-3xl lg:text-4xl font-black text-slate-800 mb-2 tracking-tight">¡Bienvenido!</h1>
-                    <p class="text-slate-500 font-medium text-[15px]">Ingresa tus credenciales para acceder al sistema.</p>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-800 mb-2 tracking-tight">¡Bienvenido!</h1>
+                    <p class="text-slate-500 font-medium text-sm sm:text-[15px]">Ingresa tus credenciales para acceder al sistema.</p>
                 </div>
 
-                <form action="../../controllers/AuthController.php" method="POST" class="space-y-6 relative z-10">
-                    <div class="space-y-2">
+                <form action="../../controllers/AuthController.php" method="POST" class="space-y-4 sm:space-y-6 relative z-10">
+                    <div class="space-y-1.5 sm:space-y-2">
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Correo Electrónico</label>
                         <div class="relative group">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors z-10">
-                                <i class="fas fa-envelope text-lg"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 sm:pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors z-10">
+                                <i class="fas fa-envelope text-base sm:text-lg"></i>
                             </span>
                             <input
                                 type="email"
                                 name="email"
                                 placeholder="tu@correo.com"
                                 required
-                                class="glass-input w-full pl-12 pr-5 py-4 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all text-slate-700 font-medium shadow-sm"
+                                class="glass-input w-full pl-11 sm:pl-12 pr-4 sm:pr-5 py-3 sm:py-4 border border-slate-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all text-slate-700 font-medium shadow-sm text-sm sm:text-base"
                             >
                         </div>
                     </div>
 
-                    <div class="space-y-2">
+                    <div class="space-y-1.5 sm:space-y-2">
                         <div class="flex justify-between items-center px-1">
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest">Contraseña</label>
-                            <a href="#" class="text-[12px] font-bold text-sky-600 hover:text-sky-700 transition-colors">¿Olvidaste tu clave?</a>
+                            <a href="#" class="text-[11px] sm:text-[12px] font-bold text-sky-600 hover:text-sky-700 transition-colors">¿Olvidaste tu clave?</a>
                         </div>
                         <div class="relative group">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors z-10">
-                                <i class="fas fa-lock text-lg"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 sm:pl-5 text-slate-400 group-focus-within:text-sky-500 transition-colors z-10">
+                                <i class="fas fa-lock text-base sm:text-lg"></i>
                             </span>
                             <input
                                 type="password"
                                 name="password"
                                 placeholder="••••••••"
                                 required
-                                class="glass-input w-full pl-12 pr-5 py-4 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all text-slate-700 font-medium shadow-sm"
+                                class="glass-input w-full pl-11 sm:pl-12 pr-4 sm:pr-5 py-3 sm:py-4 border border-slate-200 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white transition-all text-slate-700 font-medium shadow-sm text-sm sm:text-base"
                             >
                         </div>
                     </div>
@@ -132,18 +132,18 @@ unset($_SESSION['alert']);
                         <label for="remember" class="text-sm text-slate-600 cursor-pointer font-medium select-none">Recordar mi sesión</label>
                     </div>
 
-                    <div class="pt-2">
+                    <div class="pt-1 sm:pt-2">
                         <button
                             type="submit"
-                            class="w-full water-gradient text-white font-bold py-4 rounded-2xl hover:shadow-lg hover:shadow-sky-300 transform active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 text-[15px]"
+                            class="w-full water-gradient text-white font-bold py-3.5 sm:py-4 rounded-xl sm:rounded-2xl hover:shadow-lg hover:shadow-sky-300 transform active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-[15px]"
                         >
                             Acceder al Panel <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </form>
 
-                <div class="mt-10 text-center pt-8 border-t border-slate-200/60">
-                    <p class="text-slate-500 font-medium text-sm">
+                <div class="mt-6 sm:mt-10 text-center pt-5 sm:pt-8 border-t border-slate-200/60">
+                    <p class="text-slate-500 font-medium text-xs sm:text-sm">
                         ¿No tienes cuenta de cliente? 
                         <a href="registre.php" class="text-sky-600 font-bold hover:text-sky-700 hover:underline transition-all ml-1">Crear una ahora</a>
                     </p>

@@ -15,7 +15,7 @@ if ($_SESSION['usuario']['id_rol'] != 1) {
     exit;
 }
 require_once __DIR__. '/../../config/database.php';
-require_once __DIR__ . '/../../models/usuario.php';
+require_once __DIR__ . '/../../models/Usuario.php';
 
 $database = new Database();
 $db = $database->conectar();
@@ -45,26 +45,26 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 <div class="space-y-10 font-outfit relative z-10 pb-12">
 
     <!-- ── Header ──────────────────────────────────────────────────────────── -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 animate-fade-in-up">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 sm:gap-6 animate-fade-in-up">
         <div>
-            <div class="inline-block px-4 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-sm mb-4 shadow-sm">
-                <i class="fas fa-shield-halved mr-2"></i>Control Total
+            <div class="inline-block px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-600 font-bold text-xs sm:text-sm mb-3 sm:mb-4 shadow-sm">
+                <i class="fas fa-shield-halved mr-1.5 sm:mr-2"></i>Control Total
             </div>
-            <h1 class="text-4xl md:text-6xl font-black text-slate-800 tracking-tight leading-tight">
-                Gestión de<br class="hidden md:block"/>
+            <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 tracking-tight leading-tight">
+                Gestión de<br class="hidden sm:block"/>
                 <span class="premium-gradient-text">Usuarios</span>
             </h1>
-            <p class="text-slate-500 mt-3 text-lg font-medium max-w-xl">Administra accesos, roles y permisos de todos los integrantes del sistema en tiempo real.</p>
+            <p class="text-slate-500 mt-2 sm:mt-3 text-sm sm:text-base lg:text-lg font-medium max-w-xl">Administra accesos, roles y permisos de todos los integrantes del sistema en tiempo real.</p>
         </div>
         <button onclick="openModal('modalCrear')"
-            class="premium-gradient text-white px-8 py-5 rounded-[1.5rem] font-bold shadow-[0_10px_40px_rgba(79,70,229,0.4)] transition-all transform hover:-translate-y-2 hover:shadow-[0_15px_50px_rgba(225,29,72,0.5)] flex items-center gap-3 overflow-hidden relative group w-full md:w-auto justify-center">
+            class="premium-gradient text-white px-5 sm:px-8 py-3.5 sm:py-5 rounded-xl sm:rounded-[1.5rem] font-bold shadow-[0_10px_40px_rgba(79,70,229,0.4)] transition-all transform hover:-translate-y-2 hover:shadow-[0_15px_50px_rgba(225,29,72,0.5)] flex items-center gap-3 overflow-hidden relative group w-full sm:w-auto justify-center">
             <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-            <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 relative z-10 shrink-0">
-                <i class="fas fa-user-plus text-xl"></i>
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 relative z-10 shrink-0">
+                <i class="fas fa-user-plus text-lg sm:text-xl"></i>
             </div>
             <div class="relative z-10 text-left">
-                <div class="text-xs text-white/80 uppercase tracking-wider font-bold">Nuevo Registro</div>
-                <div class="text-lg">Añadir Usuario</div>
+                <div class="text-[10px] sm:text-xs text-white/80 uppercase tracking-wider font-bold">Nuevo Registro</div>
+                <div class="text-base sm:text-lg">Añadir Usuario</div>
             </div>
         </button>
     </div>
@@ -111,7 +111,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     <?php unset($_SESSION['alert']); endif; ?>
 
     <!-- ── KPI Cards ───────────────────────────────────────────────────────── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up delay-100">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 animate-fade-in-up delay-100">
         <?php
         $total_trabajadores = count(array_filter($usuarios, function($u){ return $u['id_rol'] == 2; }));
         $tarjetas = [
@@ -122,16 +122,16 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         ];
         foreach ($tarjetas as [$label, $val, $ico, $grad, $txt, $bg, $shadow]):
         ?>
-        <div class="stat-card glass-card rounded-[2.5rem] p-7 relative overflow-hidden group">
+        <div class="stat-card glass-card rounded-xl sm:rounded-[2rem] lg:rounded-[2.5rem] p-4 sm:p-5 lg:p-7 relative overflow-hidden group">
             <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br <?= $grad ?> opacity-10 rounded-full blur-[30px] group-hover:opacity-30 group-hover:scale-150 transition-all duration-700"></div>
-            <div class="flex justify-between items-start mb-6 relative z-10">
-                <div class="w-16 h-16 rounded-[1.2rem] <?= $bg ?> flex items-center justify-center <?= $txt ?> text-3xl border border-white/80 <?= $shadow ?> transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500">
+            <div class="flex justify-between items-start mb-3 sm:mb-4 lg:mb-6 relative z-10">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-lg sm:rounded-xl lg:rounded-[1.2rem] <?= $bg ?> flex items-center justify-center <?= $txt ?> text-xl sm:text-2xl lg:text-3xl border border-white/80 <?= $shadow ?> transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500">
                     <i class="fas <?= $ico ?>"></i>
                 </div>
             </div>
             <div class="relative z-10">
-                <div class="text-5xl font-black text-slate-800 tracking-tighter mb-2 group-hover:translate-x-1 transition-transform"><?= $val ?></div>
-                <div class="text-slate-500 font-bold text-xs uppercase tracking-[0.2em] group-hover:text-slate-800 transition-colors"><?= $label ?></div>
+                <div class="text-2xl sm:text-3xl lg:text-5xl font-black text-slate-800 tracking-tighter mb-1 sm:mb-2 group-hover:translate-x-1 transition-transform"><?= $val ?></div>
+                <div class="text-slate-500 font-bold text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-[0.2em] group-hover:text-slate-800 transition-colors"><?= $label ?></div>
             </div>
         </div>
         <?php endforeach; ?>
@@ -141,37 +141,37 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     <div class="animate-fade-in-up delay-200">
 
         <!-- Toolbar -->
-        <div class="glass-panel rounded-[2rem] p-6 mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-6">
-            <div class="flex items-center gap-4">
-                <div class="w-14 h-14 rounded-[1.5rem] bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-indigo-500/30 shrink-0">
+        <div class="glass-panel rounded-xl sm:rounded-[1.5rem] lg:rounded-[2rem] p-4 sm:p-5 lg:p-6 mb-4 sm:mb-6 flex flex-col xl:flex-row xl:items-center justify-between gap-4 sm:gap-6">
+            <div class="flex items-center gap-3 sm:gap-4">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl sm:rounded-[1.2rem] lg:rounded-[1.5rem] bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-lg sm:text-xl lg:text-2xl shadow-lg shadow-indigo-500/30 shrink-0">
                     <i class="fas fa-users-gear"></i>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-black text-slate-800 tracking-tight">Directorio de <span class="premium-gradient-text">Usuarios</span></h2>
-                    <p class="text-slate-500 text-sm font-medium mt-1">Gestión completa de accesos, roles y permisos</p>
+                    <h2 class="text-lg sm:text-xl lg:text-2xl font-black text-slate-800 tracking-tight">Directorio de <span class="premium-gradient-text">Usuarios</span></h2>
+                    <p class="text-slate-500 text-xs sm:text-sm font-medium mt-0.5 sm:mt-1 hidden sm:block">Gestión completa de accesos, roles y permisos</p>
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-3 items-center">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3 items-stretch sm:items-center">
                 <!-- Filtros de rol -->
-                <div class="flex gap-2 p-1.5 bg-slate-100/60 rounded-2xl backdrop-blur-md border border-white shadow-inner">
-                    <button onclick="filtrarUsuarios('todos')" class="filter-usr active px-4 py-2 rounded-xl font-bold text-sm transition-all bg-white text-indigo-600 shadow-sm border border-slate-100" data-filter="todos">Todos</button>
-                    <button onclick="filtrarUsuarios('1')" class="filter-usr px-4 py-2 rounded-xl font-bold text-sm transition-all text-slate-500 hover:bg-white hover:text-purple-600 hover:shadow-sm" data-filter="1">Admin</button>
-                    <button onclick="filtrarUsuarios('2')" class="filter-usr px-4 py-2 rounded-xl font-bold text-sm transition-all text-slate-500 hover:bg-white hover:text-sky-600 hover:shadow-sm" data-filter="2">Trabajador</button>
-                    <button onclick="filtrarUsuarios('3')" class="filter-usr px-4 py-2 rounded-xl font-bold text-sm transition-all text-slate-500 hover:bg-white hover:text-amber-600 hover:shadow-sm" data-filter="3">Cliente</button>
+                <div class="flex gap-1.5 sm:gap-2 p-1 sm:p-1.5 bg-slate-100/60 rounded-xl sm:rounded-2xl backdrop-blur-md border border-white shadow-inner overflow-x-auto">
+                    <button onclick="filtrarUsuarios('todos')" class="filter-usr active px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all bg-white text-indigo-600 shadow-sm border border-slate-100 whitespace-nowrap" data-filter="todos">Todos</button>
+                    <button onclick="filtrarUsuarios('1')" class="filter-usr px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all text-slate-500 hover:bg-white hover:text-purple-600 hover:shadow-sm whitespace-nowrap" data-filter="1">Admin</button>
+                    <button onclick="filtrarUsuarios('2')" class="filter-usr px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all text-slate-500 hover:bg-white hover:text-sky-600 hover:shadow-sm whitespace-nowrap" data-filter="2">Trabajador</button>
+                    <button onclick="filtrarUsuarios('3')" class="filter-usr px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all text-slate-500 hover:bg-white hover:text-amber-600 hover:shadow-sm whitespace-nowrap" data-filter="3">Cliente</button>
                 </div>
                 <!-- Buscador -->
                 <div class="relative w-full sm:w-auto">
-                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <i class="fas fa-search absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                     <input type="text" id="searchInput" placeholder="Buscar usuario..."
-                        class="pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm w-full sm:w-64 font-medium shadow-sm">
+                        class="pl-9 sm:pl-10 pr-4 py-2.5 sm:py-3 bg-white border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all text-sm w-full sm:w-64 font-medium shadow-sm">
                 </div>
             </div>
         </div>
 
         <!-- Table -->
-        <div class="overflow-x-auto custom-scrollbar relative min-h-[400px] px-2 pb-10">
-            <table class="w-full text-left table-separated min-w-[900px]" id="tablaUsuarios">
+        <div class="overflow-x-auto custom-scrollbar relative min-h-[300px] sm:min-h-[400px] px-0 sm:px-2 pb-6 sm:pb-10 -mx-2 sm:mx-0">
+            <table class="w-full text-left table-separated min-w-[800px]" id="tablaUsuarios">
                 <thead class="text-slate-400 text-xs font-black uppercase tracking-[0.15em] sticky top-0 z-20">
                     <tr>
                         <th class="px-8 py-4">Perfil</th>
@@ -275,7 +275,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                                 title="Editar usuario">
                                 <i class="fas fa-pen text-sm"></i>
                             </button>
-                            <a href="../../controllers/AdminUsuarioController.php?accion=toggleEstado&id=<?= $u['id_usuario'] ?>&estado=<?= $u['estado'] ?? 1 ?>"
+                            <a href="<?= $ctrl_url ?>?accion=toggleEstado&id=<?= $u['id_usuario'] ?>&estado=<?= $u['estado'] ?? 1 ?>"
                                class="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-white border-2 border-slate-100 transition-all transform hover:scale-110 hover:-translate-y-1 <?= $estado ? 'text-slate-400 hover:text-rose-600 hover:border-rose-300 hover:shadow-[0_8px_20px_rgba(239,68,68,0.2)]' : 'text-slate-400 hover:text-emerald-600 hover:border-emerald-300 hover:shadow-[0_8px_20px_rgba(16,185,129,0.2)]' ?>"
                                title="<?= $estado ? 'Suspender cuenta' : 'Activar cuenta' ?>">
                                 <i class="fas <?= $estado ? 'fa-user-lock' : 'fa-user-check' ?> text-sm"></i>
@@ -302,10 +302,17 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 </div>
 
+<?php
+// Ruta absoluta al controlador, funciona en cualquier hosting
+$base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http')
+          . '://' . $_SERVER['HTTP_HOST'];
+$ctrl_url = $base_url . '/controllers/AdminUsuarioController.php';
+?>
+
 <!-- ══ MODAL Crear Usuario ══ -->
-<div id="modalCrear" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-    <div class="glass-card rounded-[2.5rem] w-full max-w-2xl overflow-hidden transform scale-95 transition-transform duration-300 border border-white shadow-[0_30px_60px_rgba(0,0,0,0.15)]" id="modalCrearContent">
-        <div class="relative p-8 border-b border-slate-100 overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600">
+<div id="modalCrear" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-2 sm:p-4 opacity-0 transition-opacity duration-300">
+    <div class="glass-card rounded-xl sm:rounded-[2rem] lg:rounded-[2.5rem] w-full max-w-2xl max-h-[95vh] overflow-y-auto overflow-hidden transform scale-95 transition-transform duration-300 border border-white shadow-[0_30px_60px_rgba(0,0,0,0.15)]" id="modalCrearContent">
+        <div class="relative p-5 sm:p-6 lg:p-8 border-b border-slate-100 overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
             <div class="relative z-10 flex justify-between items-center">
@@ -323,8 +330,8 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 </button>
             </div>
         </div>
-        <form action="../../controllers/AdminUsuarioController.php?accion=crear" method="POST" class="p-8 space-y-6">
-            <div class="grid md:grid-cols-2 gap-6">
+        <form action="<?= $ctrl_url ?>?accion=crear" method="POST" class="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div class="space-y-2">
                     <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Nombres Completos</label>
                     <div class="relative">
@@ -347,7 +354,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                     <input type="email" name="email" required placeholder="correo@ejemplo.com" class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 outline-none transition-all font-medium text-slate-700 placeholder:text-slate-300">
                 </div>
             </div>
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div class="space-y-2">
                     <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Contraseña</label>
                     <div class="relative">
@@ -369,7 +376,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                     </div>
                 </div>
             </div>
-            <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+            <div class="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-4 border-t border-slate-100">
                 <button type="button" onclick="closeModalAnim('modalCrear','modalCrearContent')" class="px-6 py-3.5 rounded-xl text-slate-500 font-bold hover:bg-slate-100 transition-colors">Cancelar</button>
                 <button type="submit" class="premium-gradient text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-indigo-500/30 transition-all transform active:scale-95 flex items-center gap-2">
                     <i class="fas fa-user-plus"></i> Guardar Registro
@@ -380,9 +387,9 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 </div>
 
 <!-- ══ MODAL Editar Usuario ══ -->
-<div id="modalEditar" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-    <div class="glass-card rounded-[2.5rem] w-full max-w-2xl overflow-hidden transform scale-95 transition-transform duration-300 border border-white shadow-[0_30px_60px_rgba(0,0,0,0.15)]" id="modalEditarContent">
-        <div class="relative p-8 border-b border-slate-100 overflow-hidden bg-gradient-to-r from-slate-800 to-slate-700">
+<div id="modalEditar" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-2 sm:p-4 opacity-0 transition-opacity duration-300">
+    <div class="glass-card rounded-xl sm:rounded-[2rem] lg:rounded-[2.5rem] w-full max-w-2xl max-h-[95vh] overflow-y-auto overflow-hidden transform scale-95 transition-transform duration-300 border border-white shadow-[0_30px_60px_rgba(0,0,0,0.15)]" id="modalEditarContent">
+        <div class="relative p-5 sm:p-6 lg:p-8 border-b border-slate-100 overflow-hidden bg-gradient-to-r from-slate-800 to-slate-700">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
             <div class="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-2xl"></div>
             <div class="relative z-10 flex justify-between items-center">
@@ -400,9 +407,9 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 </button>
             </div>
         </div>
-        <form action="../../controllers/AdminUsuarioController.php?accion=editar" method="POST" class="p-8 space-y-6">
+        <form id="formEditar" class="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
             <input type="hidden" name="id_usuario" id="edit_id_usuario">
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div class="space-y-2">
                     <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Nombres Completos</label>
                     <div class="relative">
@@ -427,7 +434,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                     <input type="email" id="edit_email" readonly class="w-full pl-11 pr-4 py-3.5 bg-slate-100 border-2 border-slate-100 rounded-2xl text-slate-400 font-medium outline-none cursor-not-allowed">
                 </div>
             </div>
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div class="space-y-2">
                     <label class="text-[11px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                         Nueva Contraseña <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-400 text-[10px] normal-case font-bold">Opcional</span>
@@ -450,9 +457,9 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                     </div>
                 </div>
             </div>
-            <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+            <div class="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-4 border-t border-slate-100">
                 <button type="button" onclick="closeModalAnim('modalEditar','modalEditarContent')" class="px-6 py-3.5 rounded-xl text-slate-500 font-bold hover:bg-slate-100 transition-colors">Cancelar</button>
-                <button type="submit" class="premium-gradient text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-indigo-500/30 transition-all transform active:scale-95 flex items-center gap-2">
+                <button type="button" onclick="submitEditar()" id="btnGuardarEditar" class="premium-gradient text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-indigo-500/30 transition-all transform active:scale-95 flex items-center gap-2">
                     <i class="fas fa-floppy-disk"></i> Actualizar Datos
                 </button>
             </div>
@@ -461,6 +468,44 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 </div>
 
 <script>
+// ─── Submit editar via AJAX (sin recarga) ────────────────────────────────────
+function submitEditar() {
+    const btn  = document.getElementById('btnGuardarEditar');
+    const form = document.getElementById('formEditar');
+    const data = new FormData(form);
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+    fetch('<?= $ctrl_url ?>?accion=editar', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data
+    })
+    .then(res => res.json())
+    .then(json => {
+        closeModalAnim('modalEditar', 'modalEditarContent');
+        if (json.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: json.message,
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#4f46e5'
+            }).then(() => location.reload());
+        } else {
+            Swal.fire({ icon: 'error', title: 'Error', text: json.message });
+        }
+    })
+    .catch(() => {
+        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo actualizar el usuario.' });
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-floppy-disk"></i> Actualizar Datos';
+    });
+}
+
 // ─── Modal animations ────────────────────────────────────────────────────────
 function openModal(id) {
     const modal   = document.getElementById(id);

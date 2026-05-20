@@ -56,7 +56,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 /* Cart Sidebar */
 .cart-sidebar {
-    position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh;
+    position: fixed; top: 0; right: -100%; width: 90%; max-width: 450px; height: 100vh;
     background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     z-index: 50; box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
     transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,9 +84,9 @@ require_once __DIR__ . '/../layouts/sidebar.php';
 
 <!-- Cart Sidebar -->
 <div class="cart-sidebar" id="cartSidebar">
-    <div class="p-5 sm:p-8 border-b border-slate-200/60 flex items-center justify-between bg-white/50 relative z-10">
+    <div class="p-4 sm:p-5 md:p-8 border-b border-slate-200/60 flex items-center justify-between bg-white/50 relative z-10">
         <div>
-            <h3 class="text-2xl font-extrabold text-slate-800 outfit-font tracking-tight">Mi Pedido</h3>
+            <h3 class="text-xl sm:text-2xl font-extrabold text-slate-800 outfit-font tracking-tight">Mi Pedido</h3>
             <p class="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Revisión de Carrito</p>
         </div>
         <button onclick="toggleCart()" class="w-11 h-11 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-rose-500 hover:border-rose-200 hover:bg-rose-50 transition-all flex items-center justify-center shadow-sm hover:rotate-90">
@@ -95,7 +95,7 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Items -->
-    <div class="flex-1 overflow-y-auto p-5 sm:p-8 space-y-4 custom-scrollbar" id="cartItems">
+    <div class="flex-1 overflow-y-auto p-3 sm:p-5 md:p-8 space-y-3 sm:space-y-4 custom-scrollbar" id="cartItems">
         <div class="text-center py-20 text-slate-400" id="cartEmpty" style="display:none">
             <div class="w-24 h-24 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-6 border border-slate-100">
                 <i class="fas fa-shopping-basket text-4xl opacity-30 text-slate-500"></i>
@@ -106,20 +106,20 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Footer checkout -->
-    <div class="p-5 sm:p-8 border-t border-slate-200/60 bg-white/80 backdrop-blur-md relative z-10">
-        <div class="flex justify-between items-end mb-6 bg-slate-50 p-5 rounded-2xl border border-slate-100">
-            <span class="text-slate-500 font-bold uppercase tracking-wider text-xs">Total Estimado</span>
-            <span class="text-3xl font-black text-sky-600 outfit-font" id="cartTotal">$0.00</span>
+    <div class="p-3 sm:p-5 md:p-8 border-t border-slate-200/60 bg-white/80 backdrop-blur-md relative z-10">
+        <div class="flex justify-between items-end mb-4 sm:mb-6 bg-slate-50 p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-100">
+            <span class="text-slate-500 font-bold uppercase tracking-wider text-[10px] sm:text-xs">Total Estimado</span>
+            <span class="text-2xl sm:text-3xl font-black text-sky-600 outfit-font" id="cartTotal">$0.00</span>
         </div>
         
-        <div class="relative mb-6">
-            <i class="fas fa-comment-dots absolute left-4 top-4 text-slate-400"></i>
-            <textarea id="notasCompra" placeholder="Instrucciones especiales para el pedido..." rows="2"
-                class="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-medium text-slate-700 outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all resize-none shadow-sm"></textarea>
+        <div class="relative mb-4 sm:mb-6">
+            <i class="fas fa-comment-dots absolute left-3 sm:left-4 top-3 sm:top-4 text-slate-400 text-sm"></i>
+            <textarea id="notasCompra" placeholder="Instrucciones especiales..." rows="2"
+                class="w-full pl-9 sm:pl-11 pr-3 sm:pr-4 py-2.5 sm:py-3 bg-white border border-slate-200 rounded-xl sm:rounded-2xl text-sm font-medium text-slate-700 outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all resize-none shadow-sm"></textarea>
         </div>
         
         <button onclick="finalizarCompra()" id="btnCheckout"
-            class="w-full py-4.5 bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold rounded-2xl shadow-[0_10px_20px_-10px_rgba(14,165,233,0.5)] hover:shadow-[0_15px_25px_-10px_rgba(14,165,233,0.6)] transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3 text-lg outfit-font tracking-wide">
+            class="w-full py-3.5 sm:py-4 bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold rounded-xl sm:rounded-2xl shadow-[0_10px_20px_-10px_rgba(14,165,233,0.5)] hover:shadow-[0_15px_25px_-10px_rgba(14,165,233,0.6)] transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 sm:gap-3 text-base sm:text-lg outfit-font tracking-wide">
             <i class="fas fa-check-circle"></i> <span>Confirmar Pedido</span>
         </button>
         
@@ -129,9 +129,9 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 </div>
 
-<div class="max-w-[1400px] mx-auto space-y-10 pb-12">
+<div class="max-w-[1400px] mx-auto space-y-5 sm:space-y-8 lg:space-y-10 pb-6 sm:pb-12">
     <!-- Premium Hero Banner -->
-    <div class="relative rounded-[1.5rem] sm:rounded-[2.5rem] shadow-[0_20px_50px_-12px_rgba(14,165,233,0.1)] border border-white overflow-hidden p-6 sm:p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10 bg-gradient-to-br from-white via-sky-50/50 to-indigo-50/30">
+    <div class="relative rounded-xl sm:rounded-[2rem] lg:rounded-[2.5rem] shadow-[0_20px_50px_-12px_rgba(14,165,233,0.1)] border border-white overflow-hidden p-4 sm:p-8 md:p-10 lg:p-14 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-8 lg:gap-10 bg-gradient-to-br from-white via-sky-50/50 to-indigo-50/30">
         <!-- Decoraciones de fondo -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
             <div class="absolute -top-32 -right-32 w-96 h-96 bg-gradient-to-br from-sky-400/20 to-indigo-500/20 rounded-full blur-3xl"></div>
@@ -145,19 +145,19 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 <span class="w-2 h-2 rounded-full bg-sky-500 relative"></span>
                 <span class="text-[11px] font-black text-slate-700 uppercase tracking-widest">Catálogo Oficial</span>
             </div>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 mb-4 tracking-tight outfit-font leading-tight">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-black text-slate-800 mb-3 sm:mb-4 tracking-tight outfit-font leading-tight">
                 Hidratación <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600">Premium</span>
             </h2>
-            <p class="text-slate-500 text-lg font-medium max-w-lg leading-relaxed">
+            <p class="text-slate-500 text-sm sm:text-base lg:text-lg font-medium max-w-lg leading-relaxed">
                 Descubre nuestra exclusiva selección de productos MOOVA!. Haz tu pedido en segundos con la máxima calidad directo a tu puerta.
             </p>
         </div>
         
         <!-- Botón carrito flotante en el banner -->
         <button onclick="toggleCart()" id="cartBtn"
-            class="z-10 relative flex items-center justify-center gap-3 bg-gradient-to-br from-slate-900 to-slate-800 text-white px-8 py-5 rounded-[1.25rem] font-bold shadow-[0_15px_30px_-10px_rgba(15,23,42,0.5)] hover:shadow-[0_20px_40px_-10px_rgba(15,23,42,0.6)] transition-all transform hover:-translate-y-1 border border-slate-700">
+            class="z-10 relative flex items-center justify-center gap-2 sm:gap-3 bg-gradient-to-br from-slate-900 to-slate-800 text-white px-5 sm:px-8 py-3.5 sm:py-5 rounded-xl sm:rounded-[1.25rem] font-bold shadow-[0_15px_30px_-10px_rgba(15,23,42,0.5)] hover:shadow-[0_20px_40px_-10px_rgba(15,23,42,0.6)] transition-all transform hover:-translate-y-1 border border-slate-700">
             <div class="relative">
-                <i class="fas fa-shopping-bag text-2xl"></i>
+                <i class="fas fa-shopping-bag text-xl sm:text-2xl"></i>
                 <span class="badge-cart" id="cartBadge" style="<?= $carrito_cnt > 0 ? '' : 'display:none' ?>">
                     <?= $carrito_cnt ?>
                 </span>
@@ -170,17 +170,17 @@ require_once __DIR__ . '/../layouts/sidebar.php';
     </div>
 
     <!-- Barra de Búsqueda y Filtros Premium -->
-    <div class="flex flex-col xl:flex-row items-center justify-between gap-6 bg-white p-3 rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sticky top-28 z-20">
+    <div class="flex flex-col xl:flex-row items-center justify-between gap-3 sm:gap-4 lg:gap-6 bg-white p-2 sm:p-3 rounded-xl sm:rounded-[1.5rem] lg:rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] sticky top-16 sm:top-20 lg:top-28 z-20">
         
         <!-- Category Filter Pills -->
-        <div class="flex flex-wrap gap-2 px-2 py-1 w-full xl:w-auto">
-            <a href="cliente.php" class="px-5 py-2.5 rounded-xl font-bold text-[13px] transition-all flex items-center gap-2 <?= !$filtro_cat ? 'bg-slate-900 text-white shadow-md' : 'bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800' ?>">
+        <div class="flex flex-wrap gap-1.5 sm:gap-2 px-1 sm:px-2 py-1 w-full xl:w-auto overflow-x-auto">
+            <a href="cliente.php" class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-bold text-xs sm:text-[13px] transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap <?= !$filtro_cat ? 'bg-slate-900 text-white shadow-md' : 'bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800' ?>">
                 <i class="fas fa-border-all opacity-70"></i> Todo
             </a>
             <?php foreach($categorias as $cat): ?>
                 <?php if(($cat['estado'] ?? 1) == 1): ?>
                 <a href="cliente.php?cat=<?= $cat['id_categoria'] ?>"
-                   class="px-5 py-2.5 rounded-xl font-bold text-[13px] transition-all flex items-center gap-2 <?= $filtro_cat == $cat['id_categoria'] ? 'bg-slate-900 text-white shadow-md' : 'bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800' ?>">
+                   class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-bold text-xs sm:text-[13px] transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap <?= $filtro_cat == $cat['id_categoria'] ? 'bg-slate-900 text-white shadow-md' : 'bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-800' ?>">
                     <span class="w-2 h-2 rounded-full <?= $filtro_cat == $cat['id_categoria'] ? 'bg-sky-400' : 'bg-slate-300' ?>"></span>
                     <?= htmlspecialchars($cat['nombre']) ?>
                 </a>
@@ -189,20 +189,20 @@ require_once __DIR__ . '/../layouts/sidebar.php';
         </div>
 
         <!-- Buscador Moderno -->
-        <div class="relative w-full xl:w-96 shrink-0 group pr-2 pb-2 xl:pb-0 pt-2 xl:pt-0">
-            <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-colors group-focus-within:text-sky-500 text-slate-400">
-                <i class="fas fa-search"></i>
+        <div class="relative w-full xl:w-96 shrink-0 group px-1 sm:pr-2 pb-1 sm:pb-2 xl:pb-0 pt-1 sm:pt-2 xl:pt-0">
+            <div class="absolute inset-y-0 left-3 sm:left-5 flex items-center pointer-events-none transition-colors group-focus-within:text-sky-500 text-slate-400">
+                <i class="fas fa-search text-sm"></i>
             </div>
             <input type="text" id="searchInput" placeholder="Busca por nombre..." onkeyup="filtrarProductos()"
-                class="w-full pl-12 pr-5 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white outline-none transition-all text-slate-700 font-medium text-[15px] shadow-sm">
-            <div class="absolute inset-y-0 right-6 flex items-center pointer-events-none">
-                <span class="text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-2 py-1 rounded shadow-sm">/</span>
+                class="w-full pl-9 sm:pl-12 pr-4 sm:pr-5 py-2.5 sm:py-3.5 bg-slate-50/50 border border-slate-200 rounded-lg sm:rounded-xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 focus:bg-white outline-none transition-all text-slate-700 font-medium text-sm sm:text-[15px] shadow-sm">
+            <div class="absolute inset-y-0 right-4 sm:right-6 flex items-center pointer-events-none">
+                <span class="text-[10px] font-bold text-slate-400 bg-white border border-slate-200 px-2 py-1 rounded shadow-sm hidden sm:block">/</span>
             </div>
         </div>
     </div>
 
     <!-- Products Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="productsGrid">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5 lg:gap-8" id="productsGrid">
         <?php foreach ($productos as $p): ?>
         <?php
             $stock = $p['stock'];
@@ -210,16 +210,16 @@ require_once __DIR__ . '/../layouts/sidebar.php';
             $stock_badge = $sin_stock ? 'stock-badge-0' : ($stock < 5 ? 'stock-badge-low' : 'stock-badge-ok');
             $stock_label = $sin_stock ? 'Sin Stock' : ($stock < 5 ? "Quedan {$stock}" : "Stock: {$stock}");
         ?>
-        <div class="product-card glass-card rounded-[2rem] border border-slate-100 overflow-hidden premium-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col relative <?= $sin_stock ? 'opacity-60 grayscale-[30%]' : '' ?>" data-nombre="<?= strtolower(htmlspecialchars($p['nombre'])) ?>">
+        <div class="product-card glass-card rounded-xl sm:rounded-[1.5rem] lg:rounded-[2rem] border border-slate-100 overflow-hidden premium-shadow hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group flex flex-col relative <?= $sin_stock ? 'opacity-60 grayscale-[30%]' : '' ?>" data-nombre="<?= strtolower(htmlspecialchars($p['nombre'])) ?>">
             
             <!-- Etiqueta de Stock Flotante -->
-            <div class="absolute top-5 right-5 z-10">
-                <div class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm backdrop-blur-md bg-white/90 <?= $stock_badge ?>">
+            <div class="absolute top-2 right-2 sm:top-5 sm:right-5 z-10">
+                <div class="px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-wider sm:tracking-widest shadow-sm backdrop-blur-md bg-white/90 <?= $stock_badge ?>">
                     <?= $stock_label ?>
                 </div>
             </div>
 
-            <div class="h-64 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden flex items-center justify-center p-6 border-b border-slate-50">
+            <div class="h-36 sm:h-48 lg:h-64 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden flex items-center justify-center p-3 sm:p-6 border-b border-slate-50">
                 <!-- Fondo decorativo del producto -->
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(14,165,233,0.05)_0,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
@@ -232,26 +232,26 @@ require_once __DIR__ . '/../layouts/sidebar.php';
                 <?php endif; ?>
             </div>
 
-            <div class="p-8 flex-1 flex flex-col relative bg-white">
-                <div class="text-[11px] font-bold text-sky-500 mb-2 uppercase tracking-widest flex items-center gap-1.5">
-                    <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+            <div class="p-3 sm:p-5 lg:p-8 flex-1 flex flex-col relative bg-white">
+                <div class="text-[9px] sm:text-[11px] font-bold text-sky-500 mb-1 sm:mb-2 uppercase tracking-wider sm:tracking-widest flex items-center gap-1 sm:gap-1.5">
+                    <span class="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-sky-500"></span>
                     <?= htmlspecialchars($p['categoria_nombre'] ?? 'Agua Purificada') ?>
                 </div>
                 
-                <h3 class="text-xl font-black text-slate-800 mb-2 leading-tight outfit-font line-clamp-2"><?= htmlspecialchars($p['nombre']) ?></h3>
+                <h3 class="text-sm sm:text-base lg:text-xl font-black text-slate-800 mb-1 sm:mb-2 leading-tight outfit-font line-clamp-2"><?= htmlspecialchars($p['nombre']) ?></h3>
                 
-                <div class="text-2xl font-black text-slate-900 mb-6 mt-auto font-mono tracking-tight flex items-end gap-1">
-                    <span class="text-sm text-slate-400 font-bold pb-1">$</span><?= number_format($p['precio'], 2) ?>
+                <div class="text-lg sm:text-xl lg:text-2xl font-black text-slate-900 mb-3 sm:mb-6 mt-auto font-mono tracking-tight flex items-end gap-0.5 sm:gap-1">
+                    <span class="text-xs sm:text-sm text-slate-400 font-bold pb-0.5 sm:pb-1">$</span><?= number_format($p['precio'], 2) ?>
                 </div>
 
                 <?php if ($sin_stock): ?>
-                    <div class="w-full py-4 rounded-[14px] font-bold text-center text-slate-400 bg-slate-50 border border-slate-100 cursor-not-allowed flex items-center justify-center gap-2">
+                    <div class="w-full py-2.5 sm:py-3 lg:py-4 rounded-lg sm:rounded-[14px] font-bold text-center text-slate-400 bg-slate-50 border border-slate-100 cursor-not-allowed flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm">
                         <i class="fas fa-box-open"></i> Agotado
                     </div>
                 <?php else: ?>
                     <button
                         onclick="añadirCarrito(<?= $p['id_producto'] ?>, '<?= htmlspecialchars(addslashes($p['nombre'])) ?>', <?= $p['precio'] ?>, '<?= htmlspecialchars(addslashes($p['img'] ?? '')) ?>')"
-                        class="w-full py-4 rounded-[14px] font-bold text-sky-600 bg-sky-50 hover:bg-sky-500 hover:text-white hover:shadow-[0_10px_20px_-10px_rgba(14,165,233,0.5)] transition-all duration-300 flex items-center justify-center gap-2 group/btn border border-sky-100 hover:border-sky-500">
+                        class="w-full py-2.5 sm:py-3 lg:py-4 rounded-lg sm:rounded-[14px] font-bold text-sky-600 bg-sky-50 hover:bg-sky-500 hover:text-white hover:shadow-[0_10px_20px_-10px_rgba(14,165,233,0.5)] transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2 group/btn border border-sky-100 hover:border-sky-500 text-xs sm:text-sm">
                         <i class="fas fa-plus group-hover/btn:rotate-90 transition-transform duration-300"></i> Agregar
                     </button>
                 <?php endif; ?>

@@ -27,7 +27,7 @@ unset($_SESSION['alert']);
     </style>
 </head>
 
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-3 sm:p-4 relative overflow-x-hidden">
     
     <!-- Background Decoration -->
     <div class="absolute inset-0 z-0">
@@ -36,22 +36,22 @@ unset($_SESSION['alert']);
     </div>
 
     <!-- Main Container -->
-    <div class="relative z-10 w-full max-w-6xl">
-        <div class="glass rounded-[3rem] shadow-2xl shadow-sky-900/20 overflow-hidden flex flex-col lg:flex-row animate-slide">
+    <div class="relative z-10 w-full max-w-6xl my-2 sm:my-4">
+        <div class="glass rounded-2xl sm:rounded-[3rem] shadow-2xl shadow-sky-900/20 overflow-hidden flex flex-col lg:flex-row animate-slide max-h-[95vh] overflow-y-auto lg:overflow-y-visible lg:max-h-none">
             
-            <!-- Left Side: Welcome Info -->
-            <div class="lg:w-1/3 water-gradient p-10 md:p-14 text-white flex flex-col justify-between">
+            <!-- Left Side: Welcome Info (Hidden on mobile, shown as compact on tablet) -->
+            <div class="hidden lg:flex lg:w-1/3 water-gradient p-8 lg:p-10 xl:p-14 text-white flex-col justify-between">
                 <div>
-                    <div class="flex items-center gap-3 mb-10">
-                        <img src="../../img/triges.png" alt="MOOVA Logo" class="h-10 w-auto brightness-0 invert">
-                        <span class="text-2xl font-bold tracking-tight">MOOVA!</span>
+                    <div class="flex items-center gap-3 mb-8 lg:mb-10">
+                        <img src="../../img/triges.png" alt="MOOVA Logo" class="h-8 lg:h-10 w-auto brightness-0 invert">
+                        <span class="text-xl lg:text-2xl font-bold tracking-tight">MOOVA!</span>
                     </div>
-                    <h1 class="text-4xl font-bold leading-tight mb-6">Únete a la revolución de la <span class="text-sky-200">pureza</span>.</h1>
-                    <p class="text-lg text-sky-50 opacity-90 leading-relaxed mb-8">
+                    <h1 class="text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight mb-4 lg:mb-6">Únete a la revolución de la <span class="text-sky-200">pureza</span>.</h1>
+                    <p class="text-base lg:text-lg text-sky-50 opacity-90 leading-relaxed mb-6 lg:mb-8">
                         Crea tu cuenta hoy y comienza a disfrutar de la mejor hidratación con la comodidad que mereces.
                     </p>
                     
-                    <ul class="space-y-4">
+                    <ul class="space-y-3 lg:space-y-4">
                         <li class="flex items-center gap-3 text-sm font-medium">
                             <i class="fas fa-check-circle text-sky-300"></i>
                             Pedidos en un solo clic
@@ -67,109 +67,117 @@ unset($_SESSION['alert']);
                     </ul>
                 </div>
 
-                <div class="mt-12 pt-10 border-t border-white/20">
+                <div class="mt-8 lg:mt-12 pt-6 lg:pt-10 border-t border-white/20">
                     <p class="text-sm font-medium opacity-80 italic">"Hidratación inteligente para personas excepcionales."</p>
                 </div>
             </div>
 
             <!-- Right Side: Registration Form -->
-            <div class="flex-1 p-8 md:p-14 bg-white/50 relative">
-                <div class="mb-10">
-                    <a href="../../index.php" class="inline-flex items-center gap-2 text-sky-500 hover:text-sky-600 transition-colors text-[13px] font-bold mb-6 tracking-wide">
-                        <i class="fas fa-arrow-left"></i> Volver al inicio
-                    </a>
-                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Crear Cuenta Nueva</h2>
-                    <p class="text-slate-500">Completa tus datos para empezar tu experiencia MOOVA!.</p>
+            <div class="flex-1 p-5 sm:p-6 md:p-8 lg:p-10 xl:p-14 bg-white/50 relative">
+                <!-- Mobile header with branding -->
+                <div class="lg:hidden flex items-center justify-center gap-3 mb-5 sm:mb-6">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center shadow-lg shadow-sky-500/30 p-1.5">
+                        <img src="../../img/triges.png" alt="MOOVA Logo" class="w-full h-full object-contain filter brightness-0 invert">
+                    </div>
+                    <span class="text-xl sm:text-2xl font-black text-slate-800">MOOVA!</span>
                 </div>
 
-                <form action="../../controllers/UsuarioController.php" method="POST" class="space-y-6">
+                <div class="mb-5 sm:mb-8 lg:mb-10">
+                    <a href="../../index.php" class="inline-flex items-center gap-2 text-sky-500 hover:text-sky-600 transition-colors text-[12px] sm:text-[13px] font-bold mb-4 sm:mb-6 tracking-wide">
+                        <i class="fas fa-arrow-left"></i> Volver al inicio
+                    </a>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-1.5 sm:mb-2">Crear Cuenta Nueva</h2>
+                    <p class="text-slate-500 text-sm sm:text-base">Completa tus datos para empezar tu experiencia MOOVA!.</p>
+                </div>
+
+                <form action="../../controllers/UsuarioController.php" method="POST" class="space-y-4 sm:space-y-5 lg:space-y-6">
                     <input type="hidden" name="rol" value="cliente">
 
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
+                        <div class="space-y-1.5 sm:space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nombres Completos</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 sm:pl-4 text-slate-400 z-10">
                                     <i class="fas fa-user"></i>
                                 </span>
                                 <input type="text" name="nombres" required maxlength="100"
-                                    class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                    class="glass-input w-full pl-10 sm:pl-11 pr-4 sm:pr-5 py-3 sm:py-3.5 border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm sm:text-base"
                                     placeholder="Ej. Juan Pérez">
                             </div>
                         </div>
 
-                        <div class="space-y-2">
+                        <div class="space-y-1.5 sm:space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Dirección de Entrega</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 sm:pl-4 text-slate-400 z-10">
                                     <i class="fas fa-map-marker-alt"></i>
                                 </span>
                                 <input type="text" name="direccion" required maxlength="100"
-                                    class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                    class="glass-input w-full pl-10 sm:pl-11 pr-4 sm:pr-5 py-3 sm:py-3.5 border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm sm:text-base"
                                     placeholder="Ej. Calle 10 #45-67">
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
+                        <div class="space-y-1.5 sm:space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Correo Electrónico</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 sm:pl-4 text-slate-400 z-10">
                                     <i class="fas fa-envelope"></i>
                                 </span>
                                 <input type="email" name="email" required maxlength="150"
-                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-10 sm:pl-11 pr-4 sm:pr-5 py-3 sm:py-3.5 border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm sm:text-base"
                                     placeholder="juan@ejemplo.com">
                             </div>
                         </div>
 
-                        <div class="space-y-2">
+                        <div class="space-y-1.5 sm:space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Documento / Identificación</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 sm:pl-4 text-slate-400 z-10">
                                     <i class="fas fa-id-card"></i>
                                 </span>
                                 <input type="text" name="documento_numero" required maxlength="150"
-                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-10 sm:pl-11 pr-4 sm:pr-5 py-3 sm:py-3.5 border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm sm:text-base"
                                     placeholder="Número de Cédula/NIT">
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-2">
+                    <div class="space-y-1.5 sm:space-y-2">
                         <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Teléfono de Contacto</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 sm:pl-4 text-slate-400 z-10">
                                 <i class="fas fa-phone"></i>
                             </span>
                             <input type="text" name="telefono" required maxlength="30"
-                                class="w-full pl-11 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="w-full pl-10 sm:pl-11 pr-4 sm:pr-5 py-3 sm:py-3.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm sm:text-base"
                                 placeholder="Ej. 300 123 4567">
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
+                        <div class="space-y-1.5 sm:space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Contraseña</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 sm:pl-4 text-slate-400 z-10">
                                     <i class="fas fa-lock"></i>
                                 </span>
                                 <input type="password" name="password" required
-                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-10 sm:pl-11 pr-4 sm:pr-5 py-3 sm:py-3.5 border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm sm:text-base"
                                     placeholder="••••••••">
                             </div>
                         </div>
 
-                        <div class="space-y-2">
+                        <div class="space-y-1.5 sm:space-y-2">
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Confirmar Contraseña</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 z-10">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 sm:pl-4 text-slate-400 z-10">
                                     <i class="fas fa-check-double"></i>
                                 </span>
                                 <input type="password" name="confirmar_password" required
-                                class="glass-input w-full pl-11 pr-5 py-3.5 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all"
+                                class="glass-input w-full pl-10 sm:pl-11 pr-4 sm:pr-5 py-3 sm:py-3.5 border border-slate-200 rounded-xl sm:rounded-2xl focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none transition-all text-sm sm:text-base"
                                     placeholder="••••••••">
                             </div>
                         </div>
@@ -180,20 +188,20 @@ unset($_SESSION['alert']);
                             <input id="terms" type="checkbox" required class="peer appearance-none w-5 h-5 border-2 border-slate-300 rounded-md bg-white checked:bg-sky-500 checked:border-sky-500 transition-all cursor-pointer shadow-sm">
                             <i class="fas fa-check absolute text-[10px] text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"></i>
                         </div>
-                        <label for="terms" class="text-sm text-slate-600 font-medium leading-snug cursor-pointer select-none">
+                        <label for="terms" class="text-xs sm:text-sm text-slate-600 font-medium leading-snug cursor-pointer select-none">
                             Acepto los <a href="#" class="text-sky-600 font-bold hover:underline">términos de servicio</a> y la política de tratamiento de datos personales y comerciales de MOOVA!.
                         </label>
                     </div>
 
-                    <div class="pt-4">
+                    <div class="pt-2 sm:pt-4">
                         <button type="submit"
-                            class="w-full water-gradient text-white font-bold py-4 rounded-2xl hover:shadow-xl hover:shadow-sky-200 transform hover:-translate-y-1 transition-all shadow-lg active:scale-95">
+                            class="w-full water-gradient text-white font-bold py-3.5 sm:py-4 rounded-xl sm:rounded-2xl hover:shadow-xl hover:shadow-sky-200 transform hover:-translate-y-1 transition-all shadow-lg active:scale-95 text-sm sm:text-base">
                             Completar Registro
                         </button>
                     </div>
 
-                    <div class="text-center pt-2">
-                        <p class="text-sm text-slate-500 font-medium">
+                    <div class="text-center pt-1 sm:pt-2">
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium">
                             ¿Ya eres cliente? <a href="login.php" class="text-sky-600 font-bold hover:underline">Inicia sesión aquí</a>
                         </p>
                     </div>

@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../models/usuario.php';
+require_once __DIR__ . '/../models/Usuario.php';                
 
 class AuthController {
 
