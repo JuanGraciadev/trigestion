@@ -1,11 +1,11 @@
 <?php
 class Database
 {
-    private $host = "sql301.byethost7.com"; // Permiso Host 
-    private $port = "3306"; // ← ESTE ES EL PUERTO DE TU MYSQL
-    private $db_name = "b7_41905149_dbmoova"; // Permiso Base de Datos
-    private $username = "b7_41905149"; // Permiso Usuario
-    private $password = "1079172033"; // Permiso Contraseña
+    private $host = "127.0.0.1"; // Permiso Host 
+    private $port = "3320"; // ← ESTE ES EL PUERTO DE TU MYSQL
+    private $db_name = "dbmoova"; // Permiso Base de Datos
+    private $username = "root"; // Permiso Usuario
+    private $password = ""; // Permiso Contraseña
     
     public $conn; // Variable de Conexión
 

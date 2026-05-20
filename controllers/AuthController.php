@@ -77,28 +77,7 @@ class AuthController {
             'id_rol' => $usuario['id_rol']
         ];
 
-        switch ($usuario['id_rol']) {
-            case '1':
-                header("Location: ../views/dashboard/admin.php");
-                exit;
-
-            case '2':
-                header("Location: ../views/dashboard/trabajador.php");
-                exit;
-
-            case '3':
-                header("Location: ../views/dashboard/cliente.php");
-                exit;
-
-            default:
-                $_SESSION['alert'] = [
-                    'icon' => 'error',
-                    'title' => 'id_Rol no válido',
-                    'text' => 'No se pudo determinar el acceso del usuario'
-                ];
-                header("Location: ../views/usuarios/login.php");
-                exit;
-        }
+    
     }
 
     public function logout() {  #cerrar sesion
